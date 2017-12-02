@@ -28,7 +28,7 @@ export class ResultComponent {
          });*/
         this.route.queryParams.subscribe((params) => {
             console.info("Fetching Parameter!!!");
-            this.questions = JSON.parse(params["questions"]);
+            this.questions = JSON.parse(params.questions);
             console.info("Fetching Parameter: " + this.name);
         });
         this.calculateResult();
@@ -50,6 +50,6 @@ export class ResultComponent {
                 questions: JSON.stringify(this.questions)
             }
         };
-        this.router.navigate(["/detail"], navigationExtras);
+        this.router.navigate(["home/detail"], navigationExtras);
     }
 }

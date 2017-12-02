@@ -4,9 +4,7 @@ import { NSModuleFactoryLoader } from "nativescript-angular/router";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
-import {ResultComponent} from "./home/questions/result.component";
-import {QuestionService} from "./home/questions/question.service";
-import {DetailedResultComponent} from "./home/questions/detailed.result.component";
+import { QuestionService } from "./home/questions/question.service";
 
 @NgModule({
     bootstrap: [
@@ -17,7 +15,7 @@ import {DetailedResultComponent} from "./home/questions/detailed.result.componen
         AppRoutingModule
     ],
     declarations: [
-        AppComponent, ResultComponent, DetailedResultComponent
+        AppComponent
     ],
     providers: [
         { provide: NgModuleFactoryLoader, useClass: NSModuleFactoryLoader },

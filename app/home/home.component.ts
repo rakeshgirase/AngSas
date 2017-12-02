@@ -39,6 +39,7 @@ export class HomeComponent implements OnInit {
     @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
 
     private _sideDrawerTransition: DrawerTransitionBase;
+
     /* ***********************************************************
      * Use the sideDrawerTransition property to change the open/close animation of the drawer.
      *************************************************************/
@@ -105,7 +106,7 @@ export class HomeComponent implements OnInit {
                 questions: JSON.stringify(this.questions)
             }
         };
-        this.router.navigate(["/result"], navigationExtras);
+        this.router.navigate(["home/result"], navigationExtras);
     }
 
     isLastQuestion(): boolean {
