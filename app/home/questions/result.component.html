@@ -1,0 +1,9 @@
+<StackLayout>
+    <Label text="Total Questions: " class="title"></Label>
+    <Label [text]="totalQuestions" class="title"></Label>
+    <Label text="Correct:" class="title"></Label>
+    <Label [text]="right" class="title"></Label>
+    <Label text="Wrong" class="title"></Label>
+    <Label [text]="wrong" class="title"></Label>
+    <Button text="Details" (tap)="showDetailedResult()" class="link"></Button>
+</StackLayout>

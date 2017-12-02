@@ -1,0 +1,9 @@
+.idea
+node_modules
+*.iml
+*.class
+typings
+/app/**/*.js
+/app/**/*.map
+.vscode/
+platforms

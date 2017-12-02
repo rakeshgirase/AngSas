@@ -1,0 +1,12 @@
+<ScrollView>
+    <StackLayout class="list-group-item">
+        <li *ngFor="let question of questions, let i = index">
+            <Label text="Question Number: {{i+1}} of {{questions.length}}" textWrap="true" marginTop="50px"></Label>
+            <Label text="{{question.question.question}}" textWrap="true" marginTop="50px"></Label>
+            <StackLayout *ngFor="let option of question.question.options.options" class="list-group-item">
+                <Label text="{{option.description}}" textWrap="true" marginTop="50px" [backgroundColor]= "getColor(question, option)"></Label>
+            </StackLayout>
+            <Label text="-----------------------------------------------" horizontalAlignment="center" textWrap="true" marginTop="50px"></Label>
+        </li>
+    </StackLayout>
+</ScrollView>
