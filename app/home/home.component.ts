@@ -1,27 +1,27 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
-import { NavigationExtras, Router } from "@angular/router";
-import { PageRoute } from "nativescript-angular/router";
-import { DrawerTransitionBase, SlideInOnTopTransition } from "nativescript-pro-ui/sidedrawer";
-import { RadSideDrawerComponent } from "nativescript-pro-ui/sidedrawer/angular";
-import { QuestionService } from "./questions/question.service";
-import { IOption, IQuestionWrapper, IResult } from "./questions/questions.model";
+import {Component, OnInit, OnDestroy, ViewChild} from "@angular/core";
+import {NavigationExtras, Router} from "@angular/router";
+import {PageRoute} from "nativescript-angular/router";
+import {DrawerTransitionBase, SlideInOnTopTransition} from "nativescript-pro-ui/sidedrawer";
+import {RadSideDrawerComponent} from "nativescript-pro-ui/sidedrawer/angular";
+import {QuestionService} from "./questions/question.service";
+import {IOption, IQuestionWrapper} from "./questions/questions.model";
 
 @Component({
     selector: "Home",
     moduleId: module.id,
     templateUrl: "./home.component.html"
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
 
     @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
 
     private questionWrapper: IQuestionWrapper;
 
     private showAnswerFlag: boolean;
+
     private questionNumber: number;
     private questionsAsked: number;
     private totalQuestions: number;
-
     private questions: Array<IQuestionWrapper> = [];
 
     private _sideDrawerTransition: DrawerTransitionBase;
@@ -30,6 +30,10 @@ export class HomeComponent implements OnInit {
         this.questionNumber = 0;
         this.questionsAsked = 0;
         this.totalQuestions = 10;
+    }
+
+    ngOnDestroy(): void {
+        console.info("Last Message");
     }
 
     /* ***********************************************************
@@ -68,12 +72,9 @@ export class HomeComponent implements OnInit {
             this.showAnswerFlag = false;
             this.questionNumber = this.questionNumber + 1;
             if (this.questions.length >= this.questionNumber) {
-                console.info("Question exist...");
                 this.questionWrapper = this.questions[this.questionNumber - 1];
             } else {
-                console.info("Fetching New Question...");
                 const question = this.questionService.getNextQuestion();
-                console.info("Fetched Question..." + question);
                 this.questionWrapper = {question};
                 this.questions.push(this.questionWrapper);
             }
@@ -97,12 +98,9 @@ export class HomeComponent implements OnInit {
         let color = "white";
         if (this.showAnswerFlag && option.correct) {
             color = "lightgreen";
-            console.info("Selected Color: lightgreen");
         } else if (!this.questionWrapper.selectedOption.correct) {
-            console.info("Selected Color: red");
             color = "red";
         }
-        console.info("Selected Color: " + color);
 
         return color;
     }

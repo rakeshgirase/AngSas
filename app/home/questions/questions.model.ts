@@ -22,10 +22,3 @@ export interface IOption {
     description: string;
     correct: boolean;
 }
-
-export interface IResult {
-    totalQuestions: number;
-    attemptedQuestions: number;
-    skipped: number;
-    correct: number;
-}

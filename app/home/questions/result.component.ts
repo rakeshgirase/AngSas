@@ -27,9 +27,7 @@ export class ResultComponent {
          console.info("Paramuss: " + params.toString());
          });*/
         this.route.queryParams.subscribe((params) => {
-            console.info("Fetching Parameter!!!");
             this.questions = JSON.parse(params.questions);
-            console.info("Fetching Parameter: " + this.name);
         });
         this.calculateResult();
     }
