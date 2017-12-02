@@ -1,9 +1,43 @@
-<StackLayout>
-    <Label text="Total Questions: " class="title"></Label>
-    <Label [text]="totalQuestions" class="title"></Label>
-    <Label text="Correct:" class="title"></Label>
-    <Label [text]="right" class="title"></Label>
-    <Label text="Wrong" class="title"></Label>
-    <Label [text]="wrong" class="title"></Label>
-    <Button text="Details" (tap)="showDetailedResult()" class="link"></Button>
-</StackLayout>
+<ActionBar class="action-bar">
+    <!--
+    Use the NavigationButton as a side-drawer button in Android because ActionItems are shown on the right side of the ActionBar
+    -->
+    <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
+    <!--
+    Use the ActionItem for IOS with position set to left. Using the NavigationButton as a side-drawer button in iOS is not possible, because its function is to always navigate back in the application.
+    -->
+    <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()"
+                ios.position="left">
+    </ActionItem>
+</ActionBar>
+
+<!--
+RadSideDrawer is a UI component part of the Progress NativeScript UI set of components.
+Learn more about the RadSideDrawer UI component and how it can be customized in this documentation article:
+http://docs.telerik.com/devtools/nativescript-ui/Controls/Angular/SideDrawer/getting-started
+The RadSideDrawer component is designed to be used as a root element and
+it shouldn't have any other siblings other than the <ActionBar> component.
+-->
+<RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
+    <!--
+    Use the tkDrawerContent directive to display the content of the app drawer on this page.
+    -->
+    <StackLayout tkDrawerContent>
+        <MyDrawer [selectedPage]="'Home'"></MyDrawer>
+    </StackLayout>
+
+    <!--
+    Use the tkMainContent directive to display the content of the page when you have an app drawer.
+    -->
+
+
+    <StackLayout tkMainContent>
+        <Label text="Total Questions: " class="title"></Label>
+        <Label [text]="totalQuestions" class="title"></Label>
+        <Label text="Correct:" class="title"></Label>
+        <Label [text]="right" class="title"></Label>
+        <Label text="Wrong" class="title"></Label>
+        <Label [text]="wrong" class="title"></Label>
+        <Button text="Details" (tap)="showDetailedResult()" class="link"></Button>
+    </StackLayout>
+</RadSideDrawer>

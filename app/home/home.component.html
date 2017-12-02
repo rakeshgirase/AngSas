@@ -30,10 +30,18 @@ it shouldn't have any other siblings other than the <ActionBar> component.
     Use the tkMainContent directive to display the content of the page when you have an app drawer.
     -->
 
-    <FlexboxLayout flexDirection="column" tkMainContent>
+
+    <DockLayout stretchLastChild="true" tkMainContent>
+        <Button dock="top" text="Question {{questionNumber}} of {{totalQuestions}}"
+                style="background-color: wheat; margin: 5;" disabled></Button>
+        <StackLayout dock="bottom" orientation="horizontal" backgroundColor="#DDDDDD" tkMainContent>
+            <Button text="<" margin="15px" (tap)="previous()"></Button>
+            <Button text=">" margin="15px" (tap)="next()"></Button>
+            <Button *ngIf="allQuestionsAsked()" text="Submit" margin="15px" (tap)="confirm()"></Button>
+            <Button text="Result" margin="15px" (tap)="showResult()"></Button>
+        </StackLayout>
         <ScrollView>
             <StackLayout class="list-group-item">
-                <Label text="Question {{questionNumber}} of {{totalQuestions}}"></Label>
                 <Label text="{{questionWrapper.question.question}}" textWrap="true"></Label>
                 <li *ngFor="let option of questionWrapper.question.options.options">
                     <Label text="{{option.description}}" textWrap="true" (tap)="select(option)"
@@ -41,13 +49,5 @@ it shouldn't have any other siblings other than the <ActionBar> component.
                 </li>
             </StackLayout>
         </ScrollView>
-        <FlexboxLayout flexDirection="column" height="222px">
-            <StackLayout orientation="horizontal" backgroundColor="#DDDDDD" tkMainContent>
-                <Button *ngIf="!isFirstQuestion()" text="<" margin="15px" (tap)="previous()"></Button>
-                <Button *ngIf="!isLastQuestion()" text=">" margin="15px" (tap)="next()"></Button>
-                <Button *ngIf="allQuestionsAsked()" text="Submit" margin="15px" (tap)="confirm()"></Button>
-                <Button text="Result" margin="15px" (tap)="showResult()"></Button>
-            </StackLayout>
-        </FlexboxLayout>
-    </FlexboxLayout>
+    </DockLayout>
 </RadSideDrawer>

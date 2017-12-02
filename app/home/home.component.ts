@@ -1,10 +1,10 @@
-import {Component, OnInit, ViewChild} from "@angular/core";
-import {DrawerTransitionBase, SlideInOnTopTransition} from "nativescript-pro-ui/sidedrawer";
-import {RadSideDrawerComponent} from "nativescript-pro-ui/sidedrawer/angular";
-import {IOption, IQuestionWrapper, IResult} from "./questions/questions.model";
-import {QuestionService} from "./questions/question.service";
-import {Router, NavigationExtras} from "@angular/router";
-import {PageRoute} from "nativescript-angular/router";
+import { Component, OnInit, ViewChild } from "@angular/core";
+import { NavigationExtras, Router } from "@angular/router";
+import { PageRoute } from "nativescript-angular/router";
+import { DrawerTransitionBase, SlideInOnTopTransition } from "nativescript-pro-ui/sidedrawer";
+import { RadSideDrawerComponent } from "nativescript-pro-ui/sidedrawer/angular";
+import { QuestionService } from "./questions/question.service";
+import { IOption, IQuestionWrapper, IResult } from "./questions/questions.model";
 
 @Component({
     selector: "Home",
@@ -12,15 +12,19 @@ import {PageRoute} from "nativescript-angular/router";
     templateUrl: "./home.component.html"
 })
 export class HomeComponent implements OnInit {
-    private result: IResult;
+
+    @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
+
     private questionWrapper: IQuestionWrapper;
 
     private showAnswerFlag: boolean;
-
     private questionNumber: number;
     private questionsAsked: number;
     private totalQuestions: number;
+
     private questions: Array<IQuestionWrapper> = [];
+
+    private _sideDrawerTransition: DrawerTransitionBase;
 
     constructor(private router: Router, private questionService: QuestionService) {
         this.questionNumber = 0;
@@ -28,17 +32,10 @@ export class HomeComponent implements OnInit {
         this.totalQuestions = 10;
     }
 
-    /*ngOnInit(): void {
-     this.question = this.questionService.getNextQuestion();
-     }*/
     /* ***********************************************************
      * Use the @ViewChild decorator to get a reference to the drawer component.
      * It is used in the "onDrawerButtonTap" function below to manipulate the drawer.
      *************************************************************/
-
-    @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
-
-    private _sideDrawerTransition: DrawerTransitionBase;
 
     /* ***********************************************************
      * Use the sideDrawerTransition property to change the open/close animation of the drawer.
@@ -48,7 +45,6 @@ export class HomeComponent implements OnInit {
         this._sideDrawerTransition = new SlideInOnTopTransition();
         this.next();
         this.showAnswerFlag = false;
-        this.result = {totalQuestions: this.totalQuestions, attemptedQuestions: 0, skipped: 0, correct: 0};
     }
 
     get sideDrawerTransition(): DrawerTransitionBase {
@@ -67,8 +63,34 @@ export class HomeComponent implements OnInit {
         }
     }
 
+    next(): void {
+        if (this.questionNumber < this.totalQuestions) {
+            this.showAnswerFlag = false;
+            this.questionNumber = this.questionNumber + 1;
+            if (this.questions.length >= this.questionNumber) {
+                console.info("Question exist...");
+                this.questionWrapper = this.questions[this.questionNumber - 1];
+            } else {
+                console.info("Fetching New Question...");
+                const question = this.questionService.getNextQuestion();
+                console.info("Fetched Question..." + question);
+                this.questionWrapper = {question};
+                this.questions.push(this.questionWrapper);
+            }
+        }
+    }
+
     select(option: IOption): void {
         this.questionWrapper.selectedOption = option;
+    }
+
+    showResult(): void {
+        const navigationExtras: NavigationExtras = {
+            queryParams: {
+                questions: JSON.stringify(this.questions)
+            }
+        };
+        this.router.navigate(["home/result"], navigationExtras);
     }
 
     getLabelBackground(option: IOption): string {
@@ -85,38 +107,6 @@ export class HomeComponent implements OnInit {
         return color;
     }
 
-    next(): void {
-        this.showAnswerFlag = false;
-        this.questionNumber = this.questionNumber + 1;
-        if (this.questions.length >= this.questionNumber) {
-            console.info("Question exist...");
-            this.questionWrapper = this.questions[this.questionNumber - 1];
-        } else {
-            console.info("Fetching New Question...");
-            const question = this.questionService.getNextQuestion();
-            console.info("Fetched Question..." + question);
-            this.questionWrapper = {question: question};
-            this.questions.push(this.questionWrapper);
-        }
-    }
-
-    showResult(): void {
-        const navigationExtras: NavigationExtras = {
-            queryParams: {
-                questions: JSON.stringify(this.questions)
-            }
-        };
-        this.router.navigate(["home/result"], navigationExtras);
-    }
-
-    isLastQuestion(): boolean {
-        return this.questionNumber === this.totalQuestions;
-    }
-
-    isFirstQuestion(): boolean {
-        return this.questionNumber === 1;
-    }
-
     allQuestionsAsked(): boolean {
         return this.questionsAsked === this.totalQuestions;
     }
@@ -126,6 +116,7 @@ export class HomeComponent implements OnInit {
         if (this.questionWrapper.selectedOption === option) {
             color = "lightblue";
         }
+
         return color;
     }
 
