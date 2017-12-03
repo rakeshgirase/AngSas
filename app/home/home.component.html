@@ -3,7 +3,7 @@
     Use the NavigationButton as a side-drawer button in Android because ActionItems are shown on the right side of the ActionBar
     -->
     <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
-    <!-- 
+    <!--
     Use the ActionItem for IOS with position set to left. Using the NavigationButton as a side-drawer button in iOS is not possible, because its function is to always navigate back in the application.
     -->
     <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()"
@@ -32,20 +32,25 @@ it shouldn't have any other siblings other than the <ActionBar> component.
 
 
     <DockLayout stretchLastChild="true" tkMainContent>
-        <Button dock="top" text="Question {{questionNumber}} of {{totalQuestions}}"
-                style="background-color: wheat; margin: 5;" disabled></Button>
-        <StackLayout dock="bottom" orientation="horizontal" backgroundColor="#DDDDDD" tkMainContent>
-            <Button text="<" margin="15px" (tap)="previous()"></Button>
-            <Button text=">" margin="15px" (tap)="next()"></Button>
-            <Button *ngIf="allQuestionsAsked()" text="Submit" margin="15px" (tap)="confirm()"></Button>
-            <Button text="Result" margin="15px" (tap)="showResult()"></Button>
+        <Button dock="top" class="btn btn-primary btn-rounded-lg"
+                text="Question {{questionNumber}} of {{totalQuestions}}" style="margin: 5;"></Button>
+
+        <StackLayout dock="bottom" class="layout-class" orientation="horizontal">
+            <Button class="btn btn-primary btn-rounded-lg" text="<" margin="30px" (tap)="previous()"></Button>
+            <Button class="btn btn-primary btn-rounded-lg" text=">" margin="30px" (tap)="next()"></Button>
+            <Button class="btn btn-primary btn-rounded-lg" *ngIf="allQuestionsAsked()" text="Submit" margin="30px"
+                    (tap)="confirm()"></Button>
+            <Button class="btn btn-primary btn-rounded-lg" text="Quit" *ngIf="!allQuestionsAsked()" margin="30px"
+                    (tap)="showResult()"></Button>
         </StackLayout>
         <ScrollView>
             <StackLayout class="list-group-item">
-                <Label text="{{questionWrapper.question.question}}" textWrap="true"></Label>
+                <Label class="body" text="{{questionWrapper.question.question}}" textWrap="true"></Label>
                 <li *ngFor="let option of questionWrapper.question.options.options">
-                    <Label text="{{option.description}}" textWrap="true" (tap)="select(option)"
-                           [backgroundColor]="getColor(option)" marginTop="50px"></Label>
+                    <StackLayout (tap)="select(option)">
+                        <Label class="body" (tap)="select(option)" text="{{option.description}}" textWrap="true"
+                               [backgroundColor]="getColor(option)" marginTop="40px" marginBottom="40px"></Label>
+                    </StackLayout>
                 </li>
             </StackLayout>
         </ScrollView>

@@ -8,3 +8,8 @@ typings
 .vscode/
 platforms
 hooks
+
+*/bin
+*/obj
+
+*.log
