@@ -1,10 +1,11 @@
-import {Component, OnInit, OnDestroy, ViewChild} from "@angular/core";
-import {NavigationExtras, Router} from "@angular/router";
-import {PageRoute} from "nativescript-angular/router";
-import {DrawerTransitionBase, SlideInOnTopTransition} from "nativescript-pro-ui/sidedrawer";
-import {RadSideDrawerComponent} from "nativescript-pro-ui/sidedrawer/angular";
-import {QuestionService} from "./questions/question.service";
-import {IOption, IQuestionWrapper} from "./questions/questions.model";
+import { Component, OnInit, OnDestroy, ViewChild } from "@angular/core";
+import { NavigationExtras, Router } from "@angular/router";
+import { PageRoute } from "nativescript-angular/router";
+import { DrawerTransitionBase, SlideInOnTopTransition } from "nativescript-pro-ui/sidedrawer";
+import { RadSideDrawerComponent } from "nativescript-pro-ui/sidedrawer/angular";
+import { QuestionService } from "./questions/question.service";
+import { IOption, IQuestionWrapper } from "./questions/questions.model";
+import { SettingsService } from "../shared/settings.service";
 
 @Component({
     selector: "Home",
@@ -26,10 +27,10 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     private _sideDrawerTransition: DrawerTransitionBase;
 
-    constructor(private router: Router, private questionService: QuestionService) {
+    constructor(private router: Router, private questionService: QuestionService, private settingsService: SettingsService) {
         this.questionNumber = 0;
         this.questionsAsked = 0;
-        this.totalQuestions = 10;
+        this.totalQuestions = settingsService.readSettings().totalQuestionsMain;
     }
 
     ngOnDestroy(): void {

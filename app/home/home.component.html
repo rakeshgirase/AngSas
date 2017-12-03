@@ -45,11 +45,11 @@ it shouldn't have any other siblings other than the <ActionBar> component.
         </StackLayout>
         <ScrollView>
             <StackLayout class="list-group-item">
-                <Label class="body" text="{{questionWrapper.question.question}}" textWrap="true"></Label>
+                <Label text="{{questionWrapper.question.question}}" textWrap="true" marginTop="70px"></Label>
                 <li *ngFor="let option of questionWrapper.question.options.options">
-                    <StackLayout (tap)="select(option)">
+                    <StackLayout (tap)="select(option)" [backgroundColor]="getColor(option)">
                         <Label class="body" (tap)="select(option)" text="{{option.description}}" textWrap="true"
-                               [backgroundColor]="getColor(option)" marginTop="40px" marginBottom="40px"></Label>
+                               marginTop="40px" marginBottom="40px"></Label>
                     </StackLayout>
                 </li>
             </StackLayout>

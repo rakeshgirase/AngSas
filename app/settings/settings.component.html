@@ -30,8 +30,18 @@ it shouldn't have any other siblings other than the <ActionBar> component.
     <!--
     Use the tkMainContent directive to display the content of the page when you have an app drawer.
     -->
-    <GridLayout class="page page-content" tkMainContent>
-        <Label class="page-icon fa" text="&#xf013;"></Label>
-        <Label class="page-placeholder" text="<!-- Page content goes here -->"></Label>
-    </GridLayout>
+    <StackLayout class="form" tkMainContent>
+        <StackLayout class="input-field">
+            <Label text="Maximum Main Questions" class="label font-weight-bold m-b-5"></Label>
+            <TextField [(ngModel)]="_setting.totalQuestionsMain" class="input" keyboardType="number" maxLength="2" required></TextField>
+        </StackLayout>
+        <StackLayout class="input-field">
+            <Label text="Short Exams" class="label font-weight-bold m-b-5"></Label>
+            <TextField [(ngModel)]="_setting.totalQuestionsShort" class="input" hint="Short Exam" keyboardType="number" maxLength="2" required></TextField>
+            <StackLayout class="hr-light"></StackLayout>
+        </StackLayout>
+        <StackLayout class="input-field">
+            <Button text="Save" class="btn btn-primary" (tap)="save()"></Button>
+        </StackLayout>
+    </StackLayout>
 </RadSideDrawer>

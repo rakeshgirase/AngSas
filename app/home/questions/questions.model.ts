@@ -22,3 +22,8 @@ export interface IOption {
     description: string;
     correct: boolean;
 }
+
+export interface ISetting {
+    totalQuestionsShort: number;
+    totalQuestionsMain: number;
+}

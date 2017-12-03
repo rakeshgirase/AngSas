@@ -14,7 +14,7 @@ export class QuestionService {
     }
 
     private getRandomNumber(): number {
-        let randomNumber = Math.floor(Math.random() * (QUESTIONS.length - 1));
+        const randomNumber = Math.floor(Math.random() * (QUESTIONS.length - 1));
         return randomNumber;
     }
 }
