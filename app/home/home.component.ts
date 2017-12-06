@@ -1,18 +1,19 @@
-import { Component, OnInit, OnDestroy, ViewChild } from "@angular/core";
-import { NavigationExtras, Router } from "@angular/router";
-import { PageRoute } from "nativescript-angular/router";
-import { DrawerTransitionBase, SlideInOnTopTransition } from "nativescript-pro-ui/sidedrawer";
-import { RadSideDrawerComponent } from "nativescript-pro-ui/sidedrawer/angular";
-import { QuestionService } from "./questions/question.service";
-import { IOption, IQuestionWrapper } from "./questions/questions.model";
-import { SettingsService } from "../shared/settings.service";
+import {Component, OnInit, OnDestroy, ViewChild} from "@angular/core";
+import {NavigationExtras, Router} from "@angular/router";
+import {PageRoute, RouterExtensions} from "nativescript-angular/router";
+import {DrawerTransitionBase, SlideInOnTopTransition} from "nativescript-pro-ui/sidedrawer";
+import {RadSideDrawerComponent} from "nativescript-pro-ui/sidedrawer/angular";
+import {QuestionService} from "./questions/question.service";
+import {IOption, IQuestionWrapper, State} from "./questions/questions.model";
+import {SettingsService} from "../shared/settings.service";
+import {suspendEvent, resumeEvent, exitEvent, ApplicationEventData} from "application";
 
 @Component({
-    selector: "Home",
+    selector: "Main",
     moduleId: module.id,
     templateUrl: "./home.component.html"
 })
-export class HomeComponent implements OnInit, OnDestroy {
+export class HomeComponent implements OnInit {
 
     @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
 
@@ -20,21 +21,11 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     private showAnswerFlag: boolean;
 
-    private questionNumber: number;
-    private questionsAsked: number;
-    private totalQuestions: number;
-    private questions: Array<IQuestionWrapper> = [];
-
     private _sideDrawerTransition: DrawerTransitionBase;
+    private state: State;
+    private mode: string;
 
-    constructor(private router: Router, private questionService: QuestionService, private settingsService: SettingsService) {
-        this.questionNumber = 0;
-        this.questionsAsked = 0;
-        this.totalQuestions = settingsService.readSettings().totalQuestionsMain;
-    }
-
-    ngOnDestroy(): void {
-        console.info("Last Message");
+    constructor(private router: RouterExtensions, private questionService: QuestionService, private settingsService: SettingsService, private _pageRoute: PageRoute,) {
     }
 
     /* ***********************************************************
@@ -48,8 +39,15 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this._sideDrawerTransition = new SlideInOnTopTransition();
-        this.next();
-        this.showAnswerFlag = false;
+        this._pageRoute.activatedRoute
+            .switchMap((activatedRoute) => activatedRoute.params)
+            .forEach((params) => {
+                this.mode = params.mode;
+                console.log("Mode: " + this.mode);
+                this.settingsService.clearCache(this.mode);
+                this.state = this.settingsService.readCache(this.mode);
+                this.showFromState();
+            });
     }
 
     get sideDrawerTransition(): DrawerTransitionBase {
@@ -62,23 +60,32 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     previous(): void {
         this.showAnswerFlag = false;
-        if (this.questionNumber > 0) {
-            this.questionNumber = this.questionNumber - 1;
-            this.questionWrapper = this.questions[this.questionNumber - 1];
+        if (this.state.questionNumber > 1) {
+            this.state.questionNumber = this.state.questionNumber - 1;
+            this.questionWrapper = this.state.questions[this.state.questionNumber - 1];
+        }
+    }
+
+    showFromState(): void {
+        if (this.state.questions.length > this.state.questionNumber) {
+            this.questionWrapper = this.state.questions[this.state.questionNumber - 1];
+        } else {
+            this.next();
         }
     }
 
     next(): void {
-        if (this.questionNumber < this.totalQuestions) {
+        if (this.state.questionNumber < this.state.totalQuestions) {
             this.showAnswerFlag = false;
-            this.questionNumber = this.questionNumber + 1;
-            if (this.questions.length >= this.questionNumber) {
-                this.questionWrapper = this.questions[this.questionNumber - 1];
+            this.state.questionNumber = this.state.questionNumber + 1;
+            if (this.state.questions.length >= this.state.questionNumber) {
+                this.questionWrapper = this.state.questions[this.state.questionNumber - 1];
             } else {
                 const question = this.questionService.getNextQuestion();
                 this.questionWrapper = {question};
-                this.questions.push(this.questionWrapper);
+                this.state.questions.push(this.questionWrapper);
             }
+            this.settingsService.saveCache(this.mode, this.state);
         }
     }
 
@@ -89,10 +96,11 @@ export class HomeComponent implements OnInit, OnDestroy {
     showResult(): void {
         const navigationExtras: NavigationExtras = {
             queryParams: {
-                questions: JSON.stringify(this.questions)
+                questions: JSON.stringify(this.state.questions),
+                totalQuestions: this.state.totalQuestions
             }
         };
-        this.router.navigate(["home/result"], navigationExtras);
+        this.router.navigate(["main/show/result"], navigationExtras);
     }
 
     getLabelBackground(option: IOption): string {
@@ -107,7 +115,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
 
     allQuestionsAsked(): boolean {
-        return this.questionsAsked === this.totalQuestions;
+        return this.state.questions.length === this.state.totalQuestions;
     }
 
     getColor(option: IOption): string {

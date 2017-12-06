@@ -8,7 +8,7 @@ import "rxjs/add/operator/switchMap";
 import {ActivatedRoute, NavigationExtras, Router} from "@angular/router";
 
 @Component({
-    selector: "result",
+    selector: "show/result",
     moduleId: module.id,
     templateUrl: "./result.component.html"
 })
@@ -16,9 +16,8 @@ export class ResultComponent {
 
     private right: number = 0;
     private wrong: number = 0;
-    private totalQuestions: number = 10;
+    private totalQuestions: number;
     private questions: Array<IQuestionWrapper>;
-    private name: string;
 
     constructor(private pageRoute: PageRoute, private route: ActivatedRoute, private router: Router) {
         /*this.pageRoute.activatedRoute
@@ -28,8 +27,9 @@ export class ResultComponent {
          });*/
         this.route.queryParams.subscribe((params) => {
             this.questions = JSON.parse(params.questions);
+            this.totalQuestions = params.totalQuestions;
+            this.calculateResult();
         });
-        this.calculateResult();
     }
 
     calculateResult(): void {
@@ -48,6 +48,6 @@ export class ResultComponent {
                 questions: JSON.stringify(this.questions)
             }
         };
-        this.router.navigate(["home/detail"], navigationExtras);
+        this.router.navigate(["main/show/detail"], navigationExtras);
     }
 }

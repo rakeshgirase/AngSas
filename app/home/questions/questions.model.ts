@@ -1,3 +1,5 @@
+import {QuestionService} from "./question.service";
+
 export interface IQuestionWrapper {
     question: IQuestion;
     selectedOption?: IOption;
@@ -26,4 +28,16 @@ export interface IOption {
 export interface ISetting {
     totalQuestionsShort: number;
     totalQuestionsMain: number;
+}
+
+export interface State {
+    questionWrapper?: IQuestionWrapper;
+    questions: Array<IQuestionWrapper>;
+    questionNumber: number;
+    totalQuestions: number;
+}
+
+export enum Mode {
+    MAIN,
+    SHORT
 }

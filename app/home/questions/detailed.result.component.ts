@@ -8,7 +8,7 @@ import "rxjs/add/operator/switchMap";
 import {ActivatedRoute} from "@angular/router";
 
 @Component({
-    selector: "result",
+    selector: "show/detail",
     moduleId: module.id,
     templateUrl: "./detailed.result.component.html"
 })

@@ -18,6 +18,7 @@ export class QuestionService {
         return randomNumber;
     }
 }
+
 const QUESTIONS: Array<IQuestion> = [
     {
         question: "The SAS data set SASUSER.HOUSES contains a variable PRICE which has been assigned a\npermanent label of \"Asking Price\". Which SAS program temporarily replaces the label \"Asking\nPrice\" with the label \"Sale Price\" in the output?\n",

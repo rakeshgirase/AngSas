@@ -33,13 +33,13 @@ it shouldn't have any other siblings other than the <ActionBar> component.
 
     <DockLayout stretchLastChild="true" tkMainContent>
         <Button dock="top" class="btn btn-primary btn-rounded-lg"
-                text="Question {{questionNumber}} of {{totalQuestions}}" style="margin: 5;"></Button>
+                text="Question {{state.questionNumber}} of {{state.totalQuestions}}" style="margin: 5;"></Button>
 
         <StackLayout dock="bottom" class="layout-class" orientation="horizontal">
             <Button class="btn btn-primary btn-rounded-lg" text="<" margin="30px" (tap)="previous()"></Button>
             <Button class="btn btn-primary btn-rounded-lg" text=">" margin="30px" (tap)="next()"></Button>
             <Button class="btn btn-primary btn-rounded-lg" *ngIf="allQuestionsAsked()" text="Submit" margin="30px"
-                    (tap)="confirm()"></Button>
+                    (tap)="showResult()"></Button>
             <Button class="btn btn-primary btn-rounded-lg" text="Quit" *ngIf="!allQuestionsAsked()" margin="30px"
                     (tap)="showResult()"></Button>
         </StackLayout>

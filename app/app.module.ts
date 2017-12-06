@@ -6,6 +6,7 @@ import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { QuestionService } from "./home/questions/question.service";
 import { SettingsService } from "./shared/settings.service";
+
 @NgModule({
     bootstrap: [
         AppComponent
