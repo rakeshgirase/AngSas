@@ -4,7 +4,7 @@ import { NativeScriptModule } from "nativescript-angular/nativescript.module";
 import { NSModuleFactoryLoader } from "nativescript-angular/router";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
-import { QuestionService } from "./home/questions/question.service";
+import { QuestionService } from "./exam/questions/question.service";
 import { SettingsService } from "./shared/settings.service";
 
 @NgModule({

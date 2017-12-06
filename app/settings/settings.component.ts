@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { DrawerTransitionBase, SlideInOnTopTransition } from "nativescript-pro-ui/sidedrawer";
 import { RadSideDrawerComponent } from "nativescript-pro-ui/sidedrawer/angular";
-import { ISetting } from "../home/questions/questions.model";
+import { ISetting } from "../exam/questions/questions.model";
 import { SettingsService } from "../shared/settings.service";
 
 @Component({

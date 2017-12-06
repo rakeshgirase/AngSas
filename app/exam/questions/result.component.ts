@@ -48,6 +48,6 @@ export class ResultComponent {
                 questions: JSON.stringify(this.questions)
             }
         };
-        this.router.navigate(["main/show/detail"], navigationExtras);
+        this.router.navigate(["exam/show/detail"], navigationExtras);
     }
 }

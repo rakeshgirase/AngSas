@@ -1,6 +1,6 @@
 import {Injectable, OnInit} from "@angular/core";
 import * as appSettings from "application-settings";
-import {ISetting, State} from "../home/questions/questions.model";
+import {ISetting, State} from "../exam/questions/questions.model";
 
 /**
  * Created by rakesh on 15-Nov-2017.

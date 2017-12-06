@@ -9,11 +9,11 @@ import {SettingsService} from "../shared/settings.service";
 import {suspendEvent, resumeEvent, exitEvent, ApplicationEventData} from "application";
 
 @Component({
-    selector: "Main",
+    selector: "Exam",
     moduleId: module.id,
-    templateUrl: "./home.component.html"
+    templateUrl: "./exam.component.html"
 })
-export class HomeComponent implements OnInit {
+export class ExamComponent implements OnInit {
 
     @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
 
@@ -100,7 +100,7 @@ export class HomeComponent implements OnInit {
                 totalQuestions: this.state.totalQuestions
             }
         };
-        this.router.navigate(["main/show/result"], navigationExtras);
+        this.router.navigate(["exam/show/result"], navigationExtras);
     }
 
     getLabelBackground(option: IOption): string {
