@@ -6,6 +6,7 @@ import {IQuestionWrapper} from "./questions.model";
 import {PageRoute} from "nativescript-angular/router";
 import "rxjs/add/operator/switchMap";
 import {ActivatedRoute, NavigationExtras, Router} from "@angular/router";
+import {RadSideDrawerComponent} from "nativescript-pro-ui/sidedrawer/angular";
 
 @Component({
     selector: "show/result",
@@ -13,6 +14,8 @@ import {ActivatedRoute, NavigationExtras, Router} from "@angular/router";
     templateUrl: "./result.component.html"
 })
 export class ResultComponent {
+
+    @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
 
     private right: number = 0;
     private wrong: number = 0;
@@ -49,5 +52,9 @@ export class ResultComponent {
             }
         };
         this.router.navigate(["exam/show/detail"], navigationExtras);
+    }
+
+    onDrawerButtonTap(): void {
+        this.drawerComponent.sideDrawer.showDrawer();
     }
 }

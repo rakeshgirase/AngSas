@@ -6,6 +6,7 @@ import {IOption, IQuestionWrapper} from "./questions.model";
 import {PageRoute} from "nativescript-angular/router";
 import "rxjs/add/operator/switchMap";
 import {ActivatedRoute} from "@angular/router";
+import {RadSideDrawerComponent} from "nativescript-pro-ui/sidedrawer/angular";
 
 @Component({
     selector: "show/detail",
@@ -13,6 +14,8 @@ import {ActivatedRoute} from "@angular/router";
     templateUrl: "./detailed.result.component.html"
 })
 export class DetailedResultComponent {
+
+    @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
 
     private questions: Array<IQuestionWrapper>;
 
@@ -34,6 +37,10 @@ export class DetailedResultComponent {
             color = "lightgreen";
         }
         return color;
+    }
+
+    onDrawerButtonTap(): void {
+        this.drawerComponent.sideDrawer.showDrawer();
     }
 
 }

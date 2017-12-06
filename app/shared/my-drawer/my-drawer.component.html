@@ -8,11 +8,11 @@ Feel free to customize layouts and components to change how your app drawer look
 
     <ScrollView row="1">
         <StackLayout class="sidedrawer-content">
-            <MyDrawerItem title="Main Exam" route="/main/main" icon="&#xf015;" [isSelected]="isPageSelected('Home')">
+            <MyDrawerItem title="Main Exam" route="exam/main" icon="&#xf015;" [isSelected]="isPageSelected('Exam')">
             </MyDrawerItem>
-            <MyDrawerItem title="Short Exam" route="/short" icon="&#xf1ea;" [isSelected]="isPageSelected('Browse')">
+            <MyDrawerItem title="Short Exam" route="exam/short" icon="&#xf1ea;" [isSelected]="isPageSelected('Browse')">
             </MyDrawerItem>
-            <MyDrawerItem title="Practice Mode" route="/practice" icon="&#xf005;" [isSelected]="isPageSelected('Featured')">
+            <MyDrawerItem title="Practice Mode" route="exam/practice" icon="&#xf005;" [isSelected]="isPageSelected('Featured')">
             </MyDrawerItem>
 
             <StackLayout class="hr-light"></StackLayout>

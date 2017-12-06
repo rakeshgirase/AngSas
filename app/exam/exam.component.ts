@@ -43,7 +43,6 @@ export class ExamComponent implements OnInit {
             .switchMap((activatedRoute) => activatedRoute.params)
             .forEach((params) => {
                 this.mode = params.mode;
-                console.log("Mode: " + this.mode);
                 this.settingsService.clearCache(this.mode);
                 this.state = this.settingsService.readCache(this.mode);
                 this.showFromState();
