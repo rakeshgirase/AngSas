@@ -13,7 +13,7 @@ export class SettingsService {
     static SHORT:string = "short";
     DEFAULT_SETTING: ISetting = {totalQuestionsMain: 5, totalQuestionsShort: 3};
     private DEFAULT_STATE: State = {questions: [], questionNumber: 0, totalQuestions: 3};
-    private DEFAULT_MAIN_STATE: State = {
+    DEFAULT_MAIN_STATE: State = {
         questions: [],
         questionNumber: 0,
         totalQuestions: this.DEFAULT_SETTING.totalQuestionsMain
@@ -54,8 +54,7 @@ export class SettingsService {
     readCache(mode: string): State {
         let state: State;
         try {
-            state = appSettings.hasKey(mode) ? JSON.parse(appSettings.getString(mode)) :
-                this.DEFAULT_STATE;
+            state = appSettings.hasKey(mode) ? JSON.parse(appSettings.getString(mode)) : this.DEFAULT_STATE;
         } catch (error) {
             state = this.DEFAULT_STATE;
         }
@@ -76,10 +75,19 @@ export class SettingsService {
         this.clearCache(SettingsService.SHORT);
     }
 
-
     saveSetting(setting: ISetting) {
         const newSetting: string = JSON.stringify(setting);
         appSettings.setString(SETTINGS, newSetting);
+        let state: State = this.readCache(SettingsService.MAIN);
+        if(setting.totalQuestionsMain>state.totalQuestions){
+            state.totalQuestions = setting.totalQuestionsMain;
+            this.saveCache(SettingsService.MAIN, state)
+        }
+        state = this.readCache(SettingsService.SHORT);
+        if(setting.totalQuestionsMain>state.totalQuestions){
+            state.totalQuestions = setting.totalQuestionsShort;
+            this.saveCache(SettingsService.SHORT, state)
+        }
     }
 
 }

@@ -7,6 +7,7 @@ import {QuestionService} from "./questions/question.service";
 import {IOption, IQuestionWrapper, State} from "./questions/questions.model";
 import {SettingsService} from "../shared/settings.service";
 import {suspendEvent, resumeEvent, exitEvent, ApplicationEventData} from "application";
+import * as dialogs from "ui/dialogs";
 
 @Component({
     selector: "Exam",
@@ -94,13 +95,20 @@ export class ExamComponent implements OnInit {
     }
 
     showResult(): void {
+        console.log("State is: " + this.state);
+        /*dialogs.confirm("Are you sure you want to process?").then(function (proceed) {
+            if (proceed) {
+
+            }
+        });*/
         const navigationExtras: NavigationExtras = {
             queryParams: {
                 questions: JSON.stringify(this.state.questions),
                 totalQuestions: this.state.totalQuestions
             }
         };
-        this.router.navigate(["exam/show/result"], navigationExtras);
+        this.router.navigate(["exam/show/proceed"], navigationExtras);
+
     }
 
     getLabelBackground(option: IOption): string {
@@ -135,7 +143,7 @@ export class ExamComponent implements OnInit {
         this.drawerComponent.sideDrawer.showDrawer();
     }
 
-    clear():void{
+    clear(): void {
         this.settingsService.clearAll();
     }
 }
