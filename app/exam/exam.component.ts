@@ -47,6 +47,7 @@ export class ExamComponent implements OnInit {
                 this.settingsService.createSetting();
                 this.state = this.settingsService.readCache(this.mode);
                 this.showFromState();
+                this.drawerComponent.sideDrawer.closeDrawer();
             });
     }
 
@@ -76,8 +77,13 @@ export class ExamComponent implements OnInit {
     }
 
     next(): void {
-        if (this.state.questionNumber < this.state.totalQuestions) {
-            this.showAnswerFlag = false;
+        if(this.isPracticeMode()){
+            this.state.questionNumber = this.state.questionNumber + 1;
+            const question = this.questionService.getNextQuestion();
+            this.questionWrapper = {question};
+            this.state.questions.push(this.questionWrapper);
+            this.settingsService.saveCache(this.mode, this.state);
+        }else if (this.state.questionNumber < this.state.totalQuestions) {
             this.state.questionNumber = this.state.questionNumber + 1;
             if (this.state.questions.length >= this.state.questionNumber) {
                 this.questionWrapper = this.state.questions[this.state.questionNumber - 1];
@@ -95,19 +101,19 @@ export class ExamComponent implements OnInit {
     }
 
     showResult(): void {
-        console.log("State is: " + this.state);
         /*dialogs.confirm("Are you sure you want to process?").then(function (proceed) {
             if (proceed) {
 
             }
         });*/
+        this.settingsService.clearCache(this.mode);
         const navigationExtras: NavigationExtras = {
             queryParams: {
                 questions: JSON.stringify(this.state.questions),
                 totalQuestions: this.state.totalQuestions
             }
         };
-        this.router.navigate(["exam/show/proceed"], navigationExtras);
+        this.router.navigate(["exam/show/result"], navigationExtras);
 
     }
 
@@ -126,10 +132,24 @@ export class ExamComponent implements OnInit {
         return this.state.questions.length === this.state.totalQuestions;
     }
 
+    isPracticeMode(): boolean {
+        return this.mode === 'practice';
+    }
+
     getColor(option: IOption): string {
         let color = "white";
-        if (this.questionWrapper.selectedOption === option) {
-            color = "lightblue";
+        if (this.showAnswerFlag) {
+            if (this.questionWrapper.selectedOption === option && option.correct) {
+                color = "green";
+            } else if (this.questionWrapper.selectedOption === option && !option.correct) {
+                color = "red";
+            } else if (option.correct) {
+                color = "yellow";
+            }
+        } else {
+            if (this.questionWrapper.selectedOption === option) {
+                color = "lightblue";
+            }
         }
 
         return color;

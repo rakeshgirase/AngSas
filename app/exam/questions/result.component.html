@@ -23,7 +23,7 @@ it shouldn't have any other siblings other than the <ActionBar> component.
     Use the tkDrawerContent directive to display the content of the app drawer on this page.
     -->
     <StackLayout tkDrawerContent>
-        <MyDrawer [selectedPage]="'Exam'"></MyDrawer>
+        <MyDrawer [selectedPage]="'mode'"></MyDrawer>
     </StackLayout>
 
     <!--
@@ -38,6 +38,6 @@ it shouldn't have any other siblings other than the <ActionBar> component.
         <Label [text]="right" class="title"></Label>
         <Label text="Wrong" class="title"></Label>
         <Label [text]="wrong" class="title"></Label>
-        <Button text="Details" (tap)="showDetailedResult()" class="link"></Button>
+        <Button class="btn btn-primary btn-rounded-lg" text="Details" (tap)="showDetailedResult()"></Button>
     </StackLayout>
 </RadSideDrawer>

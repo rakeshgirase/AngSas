@@ -32,19 +32,29 @@ it shouldn't have any other siblings other than the <ActionBar> component.
 
 
     <DockLayout stretchLastChild="true" tkMainContent>
-        <Button dock="top" class="btn btn-primary btn-rounded-lg" style="margin: 5;">
-            <FormattedString>
-                <Span text="Question {{state.questionNumber}} "></Span>
-                <Span text="of {{state.totalQuestions}}"></Span>
-            </FormattedString>
-        </Button>
+        <StackLayout dock="top">
+            <Button *ngIf="!isPracticeMode()" class="btn btn-primary btn-rounded-lg" style="margin: 5;">
+                <FormattedString>
+                    <Span text="Question {{state.questionNumber}}"></Span>
+                    <Span text=" of {{state.totalQuestions}}"></Span>
+                </FormattedString>
+            </Button>
+            <Button *ngIf="isPracticeMode()" class="btn btn-primary btn-rounded-lg" style="margin: 5;">
+                <FormattedString>
+                    <Span text="Question {{state.questionNumber}}"></Span>
+                </FormattedString>
+            </Button>
+        </StackLayout>
 
         <StackLayout dock="bottom" class="layout-class" orientation="horizontal">
             <Button class="btn btn-primary btn-rounded-lg" text="<" margin="30px" (tap)="previous()"></Button>
             <Button class="btn btn-primary btn-rounded-lg" text=">" margin="30px" (tap)="next()"></Button>
-            <Button class="btn btn-primary btn-rounded-lg" *ngIf="allQuestionsAsked()" text="Submit" margin="30px"
+            <Button class="btn btn-primary btn-rounded-lg" *ngIf="!isPracticeMode() && allQuestionsAsked()" text="Submit" margin="30px"
                     (tap)="showResult()"></Button>
-            <Button class="btn btn-primary btn-rounded-lg" text="Quit" *ngIf="!allQuestionsAsked()" margin="30px"
+            <Button class="btn btn-primary btn-rounded-lg" text="Quit" *ngIf="!isPracticeMode() && !allQuestionsAsked()" margin="30px"
+                    (tap)="showResult()"></Button>
+            <Button class="btn btn-primary btn-rounded-lg" text="Answer" *ngIf="isPracticeMode()" margin="30px"
+                    (tap)="showAnswer()"></Button>
         </StackLayout>
         <ScrollView>
             <StackLayout class="list-group-item">
