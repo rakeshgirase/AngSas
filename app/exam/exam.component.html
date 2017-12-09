@@ -23,7 +23,7 @@ it shouldn't have any other siblings other than the <ActionBar> component.
     Use the tkDrawerContent directive to display the content of the app drawer on this page.
     -->
     <StackLayout tkDrawerContent>
-        <MyDrawer [selectedPage]="'Exam'"></MyDrawer>
+        <MyDrawer [selectedPage]="mode"></MyDrawer>
     </StackLayout>
 
     <!--
@@ -32,8 +32,12 @@ it shouldn't have any other siblings other than the <ActionBar> component.
 
 
     <DockLayout stretchLastChild="true" tkMainContent>
-        <Button dock="top" class="btn btn-primary btn-rounded-lg"
-                text="Question {{state.questionNumber}} of {{state.totalQuestions}}" style="margin: 5;"></Button>
+        <Button dock="top" class="btn btn-primary btn-rounded-lg" style="margin: 5;">
+            <FormattedString>
+                <Span text="Question {{state.questionNumber}} "></Span>
+                <Span text="of {{state.totalQuestions}}"></Span>
+            </FormattedString>
+        </Button>
 
         <StackLayout dock="bottom" class="layout-class" orientation="horizontal">
             <Button class="btn btn-primary btn-rounded-lg" text="<" margin="30px" (tap)="previous()"></Button>
@@ -41,7 +45,6 @@ it shouldn't have any other siblings other than the <ActionBar> component.
             <Button class="btn btn-primary btn-rounded-lg" *ngIf="allQuestionsAsked()" text="Submit" margin="30px"
                     (tap)="showResult()"></Button>
             <Button class="btn btn-primary btn-rounded-lg" text="Quit" *ngIf="!allQuestionsAsked()" margin="30px"
-                    (tap)="showResult()"></Button>
         </StackLayout>
         <ScrollView>
             <StackLayout class="list-group-item">

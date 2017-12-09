@@ -36,8 +36,3 @@ export interface State {
     questionNumber: number;
     totalQuestions: number;
 }
-
-export enum Mode {
-    MAIN,
-    SHORT
-}

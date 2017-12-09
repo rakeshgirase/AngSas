@@ -43,27 +43,18 @@ export class SettingsComponent implements OnInit {
     }
 
     get totalQuestionsMain(): number {
-        console.info("Inside Get Main");
-
         return this._setting.totalQuestionsMain;
     }
 
     set totalQuestionsMain(value: number) {
-        console.info("Inside Set Main");
-        // force iOS UISlider to work with discrete steps
         this._setting.totalQuestionsMain = Math.round(value);
     }
 
     get totalQuestionsShort(): number {
-        console.info("Inside Get Custom");
-        // force iOS UISlider to work with discrete steps
-
         return this._setting.totalQuestionsShort;
     }
 
     set totalQuestionsShort(value: number) {
-        console.info("Inside Set Custome");
-        // force iOS UISlider to work with discrete steps
         this._setting.totalQuestionsShort = Math.round(value);
     }
 
@@ -76,7 +67,6 @@ export class SettingsComponent implements OnInit {
     }
 
     save(): void {
-        console.info("Saved");
         this.settingsService.saveSetting(this._setting);
     }
 }

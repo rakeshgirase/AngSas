@@ -43,7 +43,7 @@ export class ExamComponent implements OnInit {
             .switchMap((activatedRoute) => activatedRoute.params)
             .forEach((params) => {
                 this.mode = params.mode;
-                this.settingsService.clearCache(this.mode);
+                this.settingsService.createSetting();
                 this.state = this.settingsService.readCache(this.mode);
                 this.showFromState();
             });
@@ -62,6 +62,7 @@ export class ExamComponent implements OnInit {
         if (this.state.questionNumber > 1) {
             this.state.questionNumber = this.state.questionNumber - 1;
             this.questionWrapper = this.state.questions[this.state.questionNumber - 1];
+            this.settingsService.saveCache(this.mode, this.state);
         }
     }
 
@@ -132,5 +133,9 @@ export class ExamComponent implements OnInit {
      *************************************************************/
     onDrawerButtonTap(): void {
         this.drawerComponent.sideDrawer.showDrawer();
+    }
+
+    clear():void{
+        this.settingsService.clearAll();
     }
 }
