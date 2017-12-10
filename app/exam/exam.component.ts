@@ -26,7 +26,7 @@ export class ExamComponent implements OnInit {
     private state: State;
     private mode: string;
 
-    constructor(private router: RouterExtensions, private questionService: QuestionService, private settingsService: SettingsService, private _pageRoute: PageRoute,) {
+    constructor(private routerExtensions: RouterExtensions, private questionService: QuestionService, private settingsService: SettingsService, private _pageRoute: PageRoute) {
     }
 
     /* ***********************************************************
@@ -39,6 +39,7 @@ export class ExamComponent implements OnInit {
      *************************************************************/
 
     ngOnInit(): void {
+        this.showAnswerFlag = false;
         this._sideDrawerTransition = new SlideInOnTopTransition();
         this._pageRoute.activatedRoute
             .switchMap((activatedRoute) => activatedRoute.params)
@@ -78,6 +79,7 @@ export class ExamComponent implements OnInit {
 
     next(): void {
         if(this.isPracticeMode()){
+            this.showAnswerFlag = false;
             this.state.questionNumber = this.state.questionNumber + 1;
             const question = this.questionService.getNextQuestion();
             this.questionWrapper = {question};
@@ -100,21 +102,39 @@ export class ExamComponent implements OnInit {
         this.questionWrapper.selectedOption = option;
     }
 
-    showResult(): void {
-        /*dialogs.confirm("Are you sure you want to process?").then(function (proceed) {
+    quit(): void {
+        dialogs.confirm("Are you sure you want to quit?").then((proceed)=> {
             if (proceed) {
-
+                this.showResult();
             }
-        });*/
+        });
+    }
+
+    submit(): void {
+        dialogs.confirm("Are you sure you want to submit?").then((proceed)=> {
+            if (proceed) {
+                this.showResult();
+            }
+        });
+    }
+
+    private showResult(): void {
         this.settingsService.clearCache(this.mode);
-        const navigationExtras: NavigationExtras = {
-            queryParams: {
-                questions: JSON.stringify(this.state.questions),
-                totalQuestions: this.state.totalQuestions
-            }
-        };
-        this.router.navigate(["exam/show/result"], navigationExtras);
-
+        this.routerExtensions.navigate(["exam/show/result"],
+            {
+                animated: true,
+                transition: {
+                    name: "slide",
+                    duration: 200,
+                    curve: "ease"
+                },
+                queryParams:{
+                    questions: JSON.stringify(this.state.questions),
+                    totalQuestions: this.state.totalQuestions,
+                    mode: this.mode
+                },
+                clearHistory: true
+            });
     }
 
     getLabelBackground(option: IOption): string {

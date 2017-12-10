@@ -50,9 +50,9 @@ it shouldn't have any other siblings other than the <ActionBar> component.
             <Button class="btn btn-primary btn-rounded-lg" text="<" margin="30px" (tap)="previous()"></Button>
             <Button class="btn btn-primary btn-rounded-lg" text=">" margin="30px" (tap)="next()"></Button>
             <Button class="btn btn-primary btn-rounded-lg" *ngIf="!isPracticeMode() && allQuestionsAsked()" text="Submit" margin="30px"
-                    (tap)="showResult()"></Button>
+                    (tap)="submit()"></Button>
             <Button class="btn btn-primary btn-rounded-lg" text="Quit" *ngIf="!isPracticeMode() && !allQuestionsAsked()" margin="30px"
-                    (tap)="showResult()"></Button>
+                    (tap)="quit()"></Button>
             <Button class="btn btn-primary btn-rounded-lg" text="Answer" *ngIf="isPracticeMode()" margin="30px"
                     (tap)="showAnswer()"></Button>
         </StackLayout>
