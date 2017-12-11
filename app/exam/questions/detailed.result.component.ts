@@ -22,7 +22,7 @@ export class DetailedResultComponent {
 
     constructor(private route: ActivatedRoute) {
         this.route.queryParams.subscribe((params) => {
-            this.questions = JSON.parse(params["questions"]);
+            this.questions = JSON.parse(params.questions);
             this.mode = params.mode;
         });
     }

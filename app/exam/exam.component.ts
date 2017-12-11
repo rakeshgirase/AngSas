@@ -45,6 +45,7 @@ export class ExamComponent implements OnInit {
             .switchMap((activatedRoute) => activatedRoute.params)
             .forEach((params) => {
                 this.mode = params.mode;
+                //this.clear();
                 this.settingsService.createSetting();
                 this.state = this.settingsService.readCache(this.mode);
                 this.showFromState();
@@ -70,7 +71,7 @@ export class ExamComponent implements OnInit {
     }
 
     showFromState(): void {
-        if (this.state.questions.length > this.state.questionNumber) {
+        if (this.state.questions.length > this.state.questionNumber || this.state.questionNumber === this.state.totalQuestions) {
             this.questionWrapper = this.state.questions[this.state.questionNumber - 1];
         } else {
             this.next();
@@ -84,7 +85,6 @@ export class ExamComponent implements OnInit {
             const question = this.questionService.getNextQuestion();
             this.questionWrapper = {question};
             this.state.questions.push(this.questionWrapper);
-            this.settingsService.saveCache(this.mode, this.state);
         }else if (this.state.questionNumber < this.state.totalQuestions) {
             this.state.questionNumber = this.state.questionNumber + 1;
             if (this.state.questions.length >= this.state.questionNumber) {
@@ -94,8 +94,8 @@ export class ExamComponent implements OnInit {
                 this.questionWrapper = {question};
                 this.state.questions.push(this.questionWrapper);
             }
-            this.settingsService.saveCache(this.mode, this.state);
         }
+        this.settingsService.saveCache(this.mode, this.state);
     }
 
     select(option: IOption): void {

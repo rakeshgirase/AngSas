@@ -41,21 +41,7 @@ export class ResultComponent implements OnInit {
             return;
         }
         application.android.on(AndroidApplication.activityBackPressedEvent, (data: AndroidActivityBackPressedEventData) => {
-            console.log("Back Button Pressed!!!!");
-            /*if (this.router.isActive("/articles", false)) {
-                data.cancel = true; // prevents default back button behavior
-                this.logout();
-            }*/
             data.cancel = true;
-
-
-            /*dialogs.alert({
-                title: "Your title",
-                message: "Your message",
-                okButtonText: "Your button text"
-            }).then(() => {
-                console.log("Dialog closed!");
-            });*/
         });
     }
 
