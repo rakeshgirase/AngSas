@@ -3,7 +3,7 @@
  */
 import {Component, OnInit, ViewChild} from "@angular/core";
 import {IQuestionWrapper} from "./questions.model";
-import {PageRoute} from "nativescript-angular/router";
+import {PageRoute, RouterExtensions} from "nativescript-angular/router";
 import "rxjs/add/operator/switchMap";
 import {ActivatedRoute, NavigationExtras, Router} from "@angular/router";
 import {RadSideDrawerComponent} from "nativescript-pro-ui/sidedrawer/angular";
@@ -27,12 +27,7 @@ export class ResultComponent implements OnInit {
     private mode: string;
     private questions: Array<IQuestionWrapper>;
 
-    constructor(private pageRoute: PageRoute, private route: ActivatedRoute, private router: Router) {
-        /*this.pageRoute.activatedRoute
-         .switchMap((activatedRoute) => activatedRoute.params)
-         .forEach((params) => {
-         console.info("Paramuss: " + params.toString());
-         });*/
+    constructor(private route: ActivatedRoute,private routerExtensions: RouterExtensions) {
         this.route.queryParams.subscribe((params) => {
             this.questions = JSON.parse(params.questions);
             this.totalQuestions = params.totalQuestions;
@@ -75,12 +70,19 @@ export class ResultComponent implements OnInit {
     }
 
     showDetailedResult(): void {
-        const navigationExtras: NavigationExtras = {
-            queryParams: {
-                questions: JSON.stringify(this.questions)
-            }
-        };
-        this.router.navigate(["exam/show/detail"], navigationExtras);
+        this.routerExtensions.navigate(["exam/show/detail"],
+            {
+                animated: true,
+                transition: {
+                    name: "slide",
+                    duration: 200,
+                    curve: "ease"
+                },
+                queryParams:{
+                    questions: JSON.stringify(this.questions),
+                    mode: this.mode
+                }
+            });
     }
 
     onDrawerButtonTap(): void {

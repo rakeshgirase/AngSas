@@ -18,10 +18,12 @@ export class DetailedResultComponent {
     @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
 
     private questions: Array<IQuestionWrapper>;
+    private mode: string;
 
     constructor(private route: ActivatedRoute) {
         this.route.queryParams.subscribe((params) => {
             this.questions = JSON.parse(params["questions"]);
+            this.mode = params.mode;
         });
     }
 
