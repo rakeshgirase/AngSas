@@ -11,8 +11,8 @@ const SETTINGS = "SETTINGS";
 export class SettingsService {
     static MAIN:string = "main";
     static SHORT:string = "short";
-    DEFAULT_SETTING: ISetting = {totalQuestionsMain: 5, totalQuestionsShort: 3};
-    private DEFAULT_STATE: State = {questions: [], questionNumber: 0, totalQuestions: 3};
+    DEFAULT_SETTING: ISetting = {totalQuestionsMain: 67, totalQuestionsShort: 15};
+    private DEFAULT_STATE: State = {questions: [], questionNumber: 0, totalQuestions: 15};
     DEFAULT_MAIN_STATE: State = {
         questions: [],
         questionNumber: 0,
