@@ -160,11 +160,11 @@ export class ExamComponent implements OnInit {
         let color = "white";
         if (this.showAnswerFlag) {
             if (this.questionWrapper.selectedOption === option && option.correct) {
-                color = "green";
+                color = "#67ff30";
             } else if (this.questionWrapper.selectedOption === option && !option.correct) {
-                color = "red";
+                color = "#ff161c";
             } else if (option.correct) {
-                color = "yellow";
+                color = "#34ed79";
             }
         } else {
             if (this.questionWrapper.selectedOption === option) {
