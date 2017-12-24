@@ -7,17 +7,13 @@ import {PageRoute, RouterExtensions} from "nativescript-angular/router";
 import "rxjs/add/operator/switchMap";
 import {ActivatedRoute, NavigationExtras, Router} from "@angular/router";
 import {RadSideDrawerComponent} from "nativescript-pro-ui/sidedrawer/angular";
-import {AndroidActivityBackPressedEventData, AndroidApplication} from "application";
-import * as application from "application";
-import * as dialogs from "ui/dialogs";
-import {isAndroid} from "platform";
 
 @Component({
     selector: "show/result",
     moduleId: module.id,
     templateUrl: "./result.component.html"
 })
-export class ResultComponent implements OnInit {
+export class ResultComponent {
 
     @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
 
@@ -33,15 +29,6 @@ export class ResultComponent implements OnInit {
             this.totalQuestions = params.totalQuestions;
             this.mode = params.mode;
             this.calculateResult();
-        });
-    }
-
-    ngOnInit(): void {
-        if (!isAndroid) {
-            return;
-        }
-        application.android.on(AndroidApplication.activityBackPressedEvent, (data: AndroidActivityBackPressedEventData) => {
-            data.cancel = true;
         });
     }
 

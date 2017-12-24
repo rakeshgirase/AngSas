@@ -9,8 +9,8 @@ const SETTINGS = "SETTINGS";
 
 @Injectable()
 export class SettingsService {
-    static MAIN:string = "main";
-    static SHORT:string = "short";
+    static MAIN: string = "main";
+    static SHORT: string = "short";
     DEFAULT_SETTING: ISetting = {totalQuestionsMain: 67, totalQuestionsShort: 15};
     private DEFAULT_STATE: State = {questions: [], questionNumber: 0, totalQuestions: 15};
     DEFAULT_MAIN_STATE: State = {
@@ -25,7 +25,7 @@ export class SettingsService {
         totalQuestions: this.DEFAULT_SETTING.totalQuestionsShort
     };
 
-    createSetting():void{
+    createSetting(): void {
         if (appSettings.hasKey(SETTINGS)) {
             const cacheSet: ISetting = this.readSettings();
             this.DEFAULT_MAIN_STATE.totalQuestions = cacheSet.totalQuestionsMain;
@@ -70,7 +70,7 @@ export class SettingsService {
         appSettings.remove(mode);
     }
 
-    clearAll():void{
+    clearAll(): void {
         this.clearCache(SettingsService.MAIN);
         this.clearCache(SettingsService.SHORT);
     }
@@ -79,12 +79,12 @@ export class SettingsService {
         const newSetting: string = JSON.stringify(setting);
         appSettings.setString(SETTINGS, newSetting);
         let state: State = this.readCache(SettingsService.MAIN);
-        if(setting.totalQuestionsMain>state.totalQuestions){
+        if (setting.totalQuestionsMain > state.totalQuestions) {
             state.totalQuestions = setting.totalQuestionsMain;
             this.saveCache(SettingsService.MAIN, state)
         }
         state = this.readCache(SettingsService.SHORT);
-        if(setting.totalQuestionsMain>state.totalQuestions){
+        if (setting.totalQuestionsMain > state.totalQuestions) {
             state.totalQuestions = setting.totalQuestionsShort;
             this.saveCache(SettingsService.SHORT, state)
         }

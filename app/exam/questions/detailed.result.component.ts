@@ -3,10 +3,12 @@
  */
 import {Component, OnInit, ViewChild} from "@angular/core";
 import {IOption, IQuestionWrapper} from "./questions.model";
-import {PageRoute} from "nativescript-angular/router";
+import {PageRoute, RouterExtensions} from "nativescript-angular/router";
 import "rxjs/add/operator/switchMap";
 import {ActivatedRoute} from "@angular/router";
 import {RadSideDrawerComponent} from "nativescript-pro-ui/sidedrawer/angular";
+import {AndroidActivityBackPressedEventData, AndroidApplication} from "application";
+import * as application from "application";
 
 @Component({
     selector: "show/detail",
@@ -20,7 +22,10 @@ export class DetailedResultComponent {
     private questions: Array<IQuestionWrapper>;
     private mode: string;
 
-    constructor(private route: ActivatedRoute) {
+    constructor(private route: ActivatedRoute, private router: RouterExtensions) {
+        application.android.on(AndroidApplication.activityBackPressedEvent, (data: AndroidActivityBackPressedEventData) => {
+            this.router.back();
+        });
         this.route.queryParams.subscribe((params) => {
             this.questions = JSON.parse(params.questions);
             this.mode = params.mode;
@@ -28,15 +33,23 @@ export class DetailedResultComponent {
     }
 
     getColor(questionWrapper: IQuestionWrapper, option: IOption): string {
-        let color: string;
-        if (questionWrapper.selectedOption && (option.tag === questionWrapper.selectedOption.tag)) {
+        let color = "white";
+        if (questionWrapper.selectedOption) {
             if (option.correct) {
-                color = "green";
-            } else {
-                color = "red";
+                color = "#07C65A";
+            } else if (option.tag === questionWrapper.selectedOption.tag) {
+                color = "#ed1b1f";
             }
         } else if (option.correct) {
-            color = "lightgreen";
+            color = "#4c8ec1";
+        }
+        return color;
+    }
+
+    getTextColor(questionWrapper: IQuestionWrapper, option: IOption): string {
+        let color = "black";
+        if ((questionWrapper.selectedOption && (option.tag === questionWrapper.selectedOption.tag)) || option.correct) {
+            color = "#fff";
         }
         return color;
     }

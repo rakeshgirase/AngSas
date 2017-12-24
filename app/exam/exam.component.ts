@@ -7,7 +7,11 @@ import {QuestionService} from "./questions/question.service";
 import {IOption, IQuestionWrapper, State} from "./questions/questions.model";
 import {SettingsService} from "../shared/settings.service";
 import {suspendEvent, resumeEvent, exitEvent, ApplicationEventData} from "application";
+import {MyDrawerComponent} from "../shared/my-drawer/my-drawer.component";
+import {AndroidActivityBackPressedEventData, AndroidApplication} from "application";
+import * as application from "application";
 import * as dialogs from "ui/dialogs";
+import {isAndroid} from "platform";
 
 @Component({
     selector: "Exam",
@@ -17,6 +21,7 @@ import * as dialogs from "ui/dialogs";
 export class ExamComponent implements OnInit {
 
     @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
+    @ViewChild("mydrawer") myDrawer: MyDrawerComponent;
 
     private questionWrapper: IQuestionWrapper;
 
@@ -27,6 +32,9 @@ export class ExamComponent implements OnInit {
     private mode: string;
 
     constructor(private routerExtensions: RouterExtensions, private questionService: QuestionService, private settingsService: SettingsService, private _pageRoute: PageRoute) {
+        application.android.on(AndroidApplication.activityBackPressedEvent, (data: AndroidActivityBackPressedEventData) => {
+            data.cancel = true;
+        });
     }
 
     /* ***********************************************************
@@ -79,13 +87,13 @@ export class ExamComponent implements OnInit {
     }
 
     next(): void {
-        if(this.isPracticeMode()){
+        if (this.isPracticeMode()) {
             this.showAnswerFlag = false;
             this.state.questionNumber = this.state.questionNumber + 1;
             const question = this.questionService.getNextQuestion();
             this.questionWrapper = {question};
             this.state.questions.push(this.questionWrapper);
-        }else if (this.state.questionNumber < this.state.totalQuestions) {
+        } else if (this.state.questionNumber < this.state.totalQuestions) {
             this.state.questionNumber = this.state.questionNumber + 1;
             if (this.state.questions.length >= this.state.questionNumber) {
                 this.questionWrapper = this.state.questions[this.state.questionNumber - 1];
@@ -103,7 +111,7 @@ export class ExamComponent implements OnInit {
     }
 
     quit(): void {
-        dialogs.confirm("Are you sure you want to quit?").then((proceed)=> {
+        dialogs.confirm("Are you sure you want to quit?").then((proceed) => {
             if (proceed) {
                 this.showResult();
             }
@@ -111,7 +119,7 @@ export class ExamComponent implements OnInit {
     }
 
     submit(): void {
-        dialogs.confirm("Are you sure you want to submit?").then((proceed)=> {
+        dialogs.confirm("Are you sure you want to submit?").then((proceed) => {
             if (proceed) {
                 this.showResult();
             }
@@ -128,7 +136,7 @@ export class ExamComponent implements OnInit {
                     duration: 200,
                     curve: "ease"
                 },
-                queryParams:{
+                queryParams: {
                     questions: JSON.stringify(this.state.questions),
                     totalQuestions: this.state.totalQuestions,
                     mode: this.mode
@@ -153,22 +161,36 @@ export class ExamComponent implements OnInit {
     }
 
     isPracticeMode(): boolean {
-        return this.mode === 'practice';
+        return this.myDrawer.selectedPage === 'practice';
     }
 
     getColor(option: IOption): string {
         let color = "white";
-        if (this.showAnswerFlag) {
-            if (this.questionWrapper.selectedOption === option && option.correct) {
-                color = "#67ff30";
-            } else if (this.questionWrapper.selectedOption === option && !option.correct) {
-                color = "#ff161c";
+        if (this.showAnswerFlag && this.isPracticeMode()) {
+            if(this.questionWrapper.selectedOption){
+                if (option.correct) {
+                    color = "#07C65A";
+                } else if (this.questionWrapper.selectedOption === option && !option.correct) {
+                    color = "#ed1b1f";
+                }
             } else if (option.correct) {
-                color = "#34ed79";
+                color = "#4c8ec1";
             }
         } else {
             if (this.questionWrapper.selectedOption === option) {
                 color = "lightblue";
+            }
+        }
+
+        return color;
+    }
+
+
+    getTextColor(option: IOption): string {
+        let color = "black";
+        if (this.showAnswerFlag && this.isPracticeMode()) {
+            if (this.questionWrapper.selectedOption === option || option.correct) {
+                color = "#fff";
             }
         }
 

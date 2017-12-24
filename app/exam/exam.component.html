@@ -9,6 +9,7 @@
     <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()"
                 ios.position="left">
     </ActionItem>
+    <Label class="action-bar-title" text="Sas Quiz" color="#ffffff"></Label>
 </ActionBar>
 
 <!--
@@ -23,7 +24,7 @@ it shouldn't have any other siblings other than the <ActionBar> component.
     Use the tkDrawerContent directive to display the content of the app drawer on this page.
     -->
     <StackLayout tkDrawerContent>
-        <MyDrawer [selectedPage]="mode"></MyDrawer>
+        <MyDrawer #mydrawer [selectedPage]="mode"></MyDrawer>
     </StackLayout>
 
     <!--
@@ -57,11 +58,11 @@ it shouldn't have any other siblings other than the <ActionBar> component.
                     (tap)="showAnswer()"></Button>
         </StackLayout>
         <ScrollView>
-            <StackLayout class="list-group-item">
+            <StackLayout marginLeft="50px">
                 <Label text="{{questionWrapper.question.question}}" textWrap="true" marginTop="70px"></Label>
                 <li *ngFor="let option of questionWrapper.question.options.options">
                     <StackLayout (tap)="select(option)" [backgroundColor]="getColor(option)">
-                        <Label class="body" (tap)="select(option)" text="{{option.description}}" textWrap="true"
+                        <Label (tap)="select(option)" text="{{option.description}}" [color]="getTextColor(option)" textWrap="true"
                                marginTop="40px" marginBottom="40px"></Label>
                     </StackLayout>
                 </li>

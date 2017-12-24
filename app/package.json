@@ -4,6 +4,5 @@
   },
   "main": "main.js",
   "name": "tns-template-drawer-navigation-ng",
-  "version": "3.3.3",
-  "profiling": "timeline"
+  "version": "3.3.3"
 }

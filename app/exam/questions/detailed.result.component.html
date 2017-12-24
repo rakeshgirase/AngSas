@@ -31,16 +31,27 @@ it shouldn't have any other siblings other than the <ActionBar> component.
     -->
 
 
-    <ScrollView tkMainContent>
-        <StackLayout class="list-group-item">
-            <li *ngFor="let question of questions, let i = index">
-                <Label text="Question Number: {{i+1}} of {{questions.length}}" textWrap="true" marginTop="50px"></Label>
-                <Label text="{{question.question.question}}" textWrap="true" marginTop="50px"></Label>
-                <StackLayout *ngFor="let option of question.question.options.options" class="list-group-item">
-                    <Label text="{{option.description}}" textWrap="true" marginTop="50px" [backgroundColor]= "getColor(question, option)"></Label>
-                </StackLayout>
-                <Label text="-----------------------------------------------" horizontalAlignment="center" textWrap="true" marginTop="50px"></Label>
-            </li>
+    <StackLayout tkMainContent>
+        <StackLayout orientation="horizontal" marginTop="40px" marginBottom="40px">
+            <Label backgroundColor="#07C65A" marginRight="60px" color="#fff" text="Correct"></Label>
+            <Label backgroundColor="#4c8ec1" marginRight="60px" color="#fff" text="Skipped"></Label>
+            <Label backgroundColor="#ed1b1f" color="#fff" text="Wrong"></Label>
         </StackLayout>
-    </ScrollView>
+        <ScrollView>
+            <StackLayout class="list-group-item">
+                <li *ngFor="let question of questions, let i = index">
+                    <Label text="Question Number: {{i+1}} of {{questions.length}}" textWrap="true"
+                           marginTop="50px"></Label>
+                    <Label text="{{question.question.question}}" textWrap="true" marginTop="50px"></Label>
+                    <StackLayout *ngFor="let option of question.question.options.options" class="list-group-item">
+                        <Label text="{{option.description}}" textWrap="true" marginTop="50px"
+                               [backgroundColor]="getColor(question, option)"
+                               [color]="getTextColor(question, option)"></Label>
+                    </StackLayout>
+                    <Label text="-----------------------------------------------" horizontalAlignment="center"
+                           textWrap="true" marginTop="50px"></Label>
+                </li>
+            </StackLayout>
+        </ScrollView>
+    </StackLayout>
 </RadSideDrawer>

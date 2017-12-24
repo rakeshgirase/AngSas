@@ -3,6 +3,7 @@ import { DrawerTransitionBase, SlideInOnTopTransition } from "nativescript-pro-u
 import { RadSideDrawerComponent } from "nativescript-pro-ui/sidedrawer/angular";
 import { ISetting } from "../exam/questions/questions.model";
 import { SettingsService } from "../shared/settings.service";
+import * as Toast from 'nativescript-toast';
 
 @Component({
     selector: "Settings",
@@ -68,5 +69,6 @@ export class SettingsComponent implements OnInit {
 
     save(): void {
         this.settingsService.saveSetting(this._setting);
+        Toast.makeText("Saved!!!", "long").show();
     }
 }
