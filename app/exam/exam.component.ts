@@ -4,7 +4,7 @@ import {PageRoute, RouterExtensions} from "nativescript-angular/router";
 import {DrawerTransitionBase, SlideInOnTopTransition} from "nativescript-pro-ui/sidedrawer";
 import {RadSideDrawerComponent} from "nativescript-pro-ui/sidedrawer/angular";
 import {QuestionService} from "./questions/question.service";
-import {IOption, IQuestionWrapper, State} from "./questions/questions.model";
+import {IOption, IQuestion, IQuestionWrapper, State} from "./questions/questions.model";
 import {SettingsService} from "../shared/settings.service";
 import {suspendEvent, resumeEvent, exitEvent, ApplicationEventData} from "application";
 import {MyDrawerComponent} from "../shared/my-drawer/my-drawer.component";
@@ -47,6 +47,7 @@ export class ExamComponent implements OnInit {
      *************************************************************/
 
     ngOnInit(): void {
+        this.clear();
         this.showAnswerFlag = false;
         this._sideDrawerTransition = new SlideInOnTopTransition();
         this._pageRoute.activatedRoute
@@ -90,17 +91,21 @@ export class ExamComponent implements OnInit {
         if (this.isPracticeMode()) {
             this.showAnswerFlag = false;
             this.state.questionNumber = this.state.questionNumber + 1;
-            const question = this.questionService.getNextQuestion();
-            this.questionWrapper = {question};
-            this.state.questions.push(this.questionWrapper);
+            this.questionService.getNextQuestion().subscribe((data: IQuestion) => {
+                let question:IQuestion = data;
+                this.questionWrapper = {question};
+                this.state.questions.push(this.questionWrapper);
+            });
         } else if (this.state.questionNumber < this.state.totalQuestions) {
             this.state.questionNumber = this.state.questionNumber + 1;
             if (this.state.questions.length >= this.state.questionNumber) {
                 this.questionWrapper = this.state.questions[this.state.questionNumber - 1];
             } else {
-                const question = this.questionService.getNextQuestion();
-                this.questionWrapper = {question};
-                this.state.questions.push(this.questionWrapper);
+                this.questionService.getNextQuestion().subscribe((data: IQuestion) => {
+                    let question:IQuestion = data;
+                    this.questionWrapper = {question};
+                    this.state.questions.push(this.questionWrapper);
+                });
             }
         }
         this.settingsService.saveCache(this.mode, this.state);

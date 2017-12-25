@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "722054280380",
+    "firebase_url": "https://sas-quiz.firebaseio.com",
+    "project_id": "sas-quiz",
+    "storage_bucket": "sas-quiz.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:722054280380:android:a8ae44bb18f83cf7",
+        "android_client_info": {
+          "package_name": "com.exuberant.sasquiz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "722054280380-r75k7kda8h6vbre8pqu2huo00meqn6ap.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDH6AAFQDVqiz4nsVmAMJVarAP-xA3vghQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

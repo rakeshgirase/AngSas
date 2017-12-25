@@ -6,13 +6,9 @@ export interface IQuestionWrapper {
 }
 
 export interface IQuestion {
+    number?: string;
     question: string;
-    options: IOptions;
-    submittedAnswer: string;
-    answer: string;
-    answeredCorrectly: boolean;
-    complete: boolean;
-    errorMessage: string;
+    options: Array<IOption>;
 }
 
 export interface IOptions {

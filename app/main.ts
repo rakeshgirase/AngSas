@@ -2,5 +2,6 @@
 import { platformNativeScriptDynamic } from "nativescript-angular/platform";
 
 import { AppModule } from "./app.module";
+import "./shared/firebase/firebase.common";
 
 platformNativeScriptDynamic().bootstrapModule(AppModule);

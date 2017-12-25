@@ -60,7 +60,7 @@ it shouldn't have any other siblings other than the <ActionBar> component.
         <ScrollView>
             <StackLayout marginLeft="50px">
                 <Label text="{{questionWrapper.question.question}}" textWrap="true" marginTop="70px"></Label>
-                <li *ngFor="let option of questionWrapper.question.options.options">
+                <li *ngFor="let option of questionWrapper.question.options">
                     <StackLayout (tap)="select(option)" [backgroundColor]="getColor(option)">
                         <Label (tap)="select(option)" text="{{option.description}}" [color]="getTextColor(option)" textWrap="true"
                                marginTop="40px" marginBottom="40px"></Label>

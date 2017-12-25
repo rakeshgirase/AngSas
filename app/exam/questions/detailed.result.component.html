@@ -31,11 +31,11 @@ it shouldn't have any other siblings other than the <ActionBar> component.
     -->
 
 
-    <StackLayout tkMainContent>
-        <StackLayout orientation="horizontal" marginTop="40px" marginBottom="40px">
-            <Label backgroundColor="#07C65A" marginRight="60px" color="#fff" text="Correct"></Label>
-            <Label backgroundColor="#4c8ec1" marginRight="60px" color="#fff" text="Skipped"></Label>
-            <Label backgroundColor="#ed1b1f" color="#fff" text="Wrong"></Label>
+    <StackLayout tkMainContent marginLeft="50px">
+        <StackLayout orientation="horizontal" marginTop="20px" marginBottom="20px">
+            <Label backgroundColor="#07C65A" marginRight="60px" color="#ffffff" text="Correct"></Label>
+            <Label backgroundColor="#ed1b1f" marginRight="60px" color="#ffffff" text="Incorrect"></Label>
+            <Label backgroundColor="#4c8ec1" color="#ffffff" text="Skipped"></Label>
         </StackLayout>
         <ScrollView>
             <StackLayout class="list-group-item">
@@ -43,7 +43,7 @@ it shouldn't have any other siblings other than the <ActionBar> component.
                     <Label text="Question Number: {{i+1}} of {{questions.length}}" textWrap="true"
                            marginTop="50px"></Label>
                     <Label text="{{question.question.question}}" textWrap="true" marginTop="50px"></Label>
-                    <StackLayout *ngFor="let option of question.question.options.options" class="list-group-item">
+                    <StackLayout *ngFor="let option of question.question.options" class="list-group-item">
                         <Label text="{{option.description}}" textWrap="true" marginTop="50px"
                                [backgroundColor]="getColor(question, option)"
                                [color]="getTextColor(question, option)"></Label>
