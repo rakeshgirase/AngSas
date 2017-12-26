@@ -2,6 +2,7 @@ import {Injectable, NgZone} from "@angular/core";
 import {IOption, IQuestion} from "./questions.model";
 import {Observable} from "rxjs/Rx";
 import firebase = require("nativescript-plugin-firebase");
+import {ConnectionService} from "../../shared/connection.service";
 
 /**
  * Created by rakesh on 15-Nov-2017.
@@ -9,38 +10,45 @@ import firebase = require("nativescript-plugin-firebase");
 @Injectable()
 export class QuestionService {
 
-    constructor(private _ngZone: NgZone) {
+    constructor(private _ngZone: NgZone, private connectionService: ConnectionService) {
     }
 
     getNextQuestion(): Observable<IQuestion> {
-        const id: number = this.getRandomNumber();
-        return this.getFirebaseQuestion(id);
+        return this.fetch();
     }
 
     private getRandomNumber(): number {
-        console.info("Fetching Random Number....");
         const randomNumber = Math.floor(Math.random() * (800));
         return randomNumber;
     }
 
-    getFirebaseQuestion(id: number): Observable<any> {
-        return new Observable((observer: any) => {
-            const path = "questions" + "/" + id;
+    fetch(): Observable<any> {
+        if (this.connectionService.isConnected()) {
+            let id = this.getRandomNumber();
+            return this.getFirebaseQuestion(id);
+        } else {
+            return this.getNextQuestionFromCache();
+        }
+    }
 
-            const onValueEvent = (snapshot: any) => {
-                this._ngZone.run(() => {
-                    const results = this.toQuestion(snapshot.value);
-                    observer.next(results);
-                });
-            };
-            firebase.addValueEventListener(onValueEvent, `/${path}`);
-        }).catch(this.handleErrors);
+    getFirebaseQuestion(id: number): Observable<any> {
+            return new Observable((observer: any) => {
+                const path = "questions" + "/" + id;
+
+                const onValueEvent = (snapshot: any) => {
+                    this._ngZone.run(() => {
+                        const results = this.toQuestion(snapshot.value);
+                        observer.next(results);
+                    });
+                };
+                firebase.addValueEventListener(onValueEvent, `/${path}`);
+            }).catch(this.handleErrors);
     }
 
     private toQuestion(data: any): IQuestion {
-        let question:IQuestion = {question:undefined, options:[]};
+        let question: IQuestion = {question: undefined, options: []};
         if (data) {
-            data.options.forEach((option:IOption)=>{
+            data.options.forEach((option: IOption) => {
                 question.options.push(option);
             });
             question.question = data.question;
@@ -50,7 +58,40 @@ export class QuestionService {
     }
 
     private handleErrors(error: Response): Observable<any> {
-        console.error("Got error....")
         return Observable.throw(error);
     }
+
+    private getNextQuestionFromCache(): Observable<any> {
+        return new Observable((observer: any) => {
+            observer.next(QUESTIONS[0]);
+        });
+    }
 }
+
+const QUESTIONS: Array<IQuestion> = [
+    {
+        question: "The following SAS program is submitted:\nfootnote 1 'Sales Report for Last Month';\nfootnote2 'Selected Products Only';\nfootnote3 'All Regions';\nfootnote4 'All Figures in Thousands of Dollars';\nproc print data = sasuser.shoes;\nfootnote2 'All Products';\nrun;\nWhich footnote(s) is/are displayed in the report?\n",
+        options: [
+            {
+                tag: "A",
+                description: "A. All Products",
+                correct: false
+            },
+            {
+                tag: "B",
+                description: "B. Sales Report for Last Month All Products",
+                correct: true
+            },
+            {
+                tag: "C",
+                description: "C. All Products All Regions All Figures in Thousands of Dollars",
+                correct: false
+            },
+            {
+                tag: "D",
+                description: "D. Sales Report for Last Month All Products All Regions All Figures in Thousands of Dollars",
+                correct: false
+            }
+        ]
+    }
+    ]

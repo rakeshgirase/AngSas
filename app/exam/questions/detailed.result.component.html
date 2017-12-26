@@ -30,14 +30,14 @@ it shouldn't have any other siblings other than the <ActionBar> component.
     Use the tkMainContent directive to display the content of the page when you have an app drawer.
     -->
 
-
-    <StackLayout tkMainContent marginLeft="50px">
+    <StackLayout tkMainContent>
         <StackLayout orientation="horizontal" marginTop="20px" marginBottom="20px">
-            <Label backgroundColor="#07C65A" marginRight="60px" color="#ffffff" text="Correct"></Label>
-            <Label backgroundColor="#ed1b1f" marginRight="60px" color="#ffffff" text="Incorrect"></Label>
-            <Label backgroundColor="#4c8ec1" color="#ffffff" text="Skipped"></Label>
+            <Button text="All" margin="10px" (tap)="all()"></Button>
+            <Button backgroundColor="#07C65A" text="Correct" margin="10px" (tap)="correct()"></Button>
+            <Button backgroundColor="#ed1b1f" text="Wrong" margin="10px" (tap)="incorrect()"></Button>
+            <Button backgroundColor="#4c8ec1" text="Skipped" margin="10px" (tap)="skipped()"></Button>
         </StackLayout>
-        <ScrollView>
+        <ScrollView marginLeft="30px" marginRight="30px">
             <StackLayout class="list-group-item">
                 <li *ngFor="let question of questions, let i = index">
                     <Label text="Question Number: {{i+1}} of {{questions.length}}" textWrap="true"

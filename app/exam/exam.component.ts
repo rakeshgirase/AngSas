@@ -90,18 +90,19 @@ export class ExamComponent implements OnInit {
     next(): void {
         if (this.isPracticeMode()) {
             this.showAnswerFlag = false;
-            this.state.questionNumber = this.state.questionNumber + 1;
             this.questionService.getNextQuestion().subscribe((data: IQuestion) => {
+                this.state.questionNumber = this.state.questionNumber + 1;
                 let question:IQuestion = data;
                 this.questionWrapper = {question};
                 this.state.questions.push(this.questionWrapper);
             });
         } else if (this.state.questionNumber < this.state.totalQuestions) {
-            this.state.questionNumber = this.state.questionNumber + 1;
-            if (this.state.questions.length >= this.state.questionNumber) {
+            if (this.state.questions.length>0 && this.state.questions.length > this.state.questionNumber) {
+                this.state.questionNumber = this.state.questionNumber + 1;
                 this.questionWrapper = this.state.questions[this.state.questionNumber - 1];
             } else {
                 this.questionService.getNextQuestion().subscribe((data: IQuestion) => {
+                    this.state.questionNumber = this.state.questionNumber + 1;
                     let question:IQuestion = data;
                     this.questionWrapper = {question};
                     this.state.questions.push(this.questionWrapper);

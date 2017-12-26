@@ -19,6 +19,7 @@ export class DetailedResultComponent {
 
     @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
 
+    private allQuestions: Array<IQuestionWrapper>;
     private questions: Array<IQuestionWrapper>;
     private mode: string;
 
@@ -27,7 +28,8 @@ export class DetailedResultComponent {
             this.router.back();
         });
         this.route.queryParams.subscribe((params) => {
-            this.questions = JSON.parse(params.questions);
+            this.allQuestions = JSON.parse(params.questions);
+            this.questions = this.allQuestions;
             this.mode = params.mode;
         });
     }
@@ -56,6 +58,22 @@ export class DetailedResultComponent {
 
     onDrawerButtonTap(): void {
         this.drawerComponent.sideDrawer.showDrawer();
+    }
+
+    all(): void {
+        this.questions = this.allQuestions;
+    }
+
+    correct(): void {
+        this.questions = this.allQuestions.filter(question=> question.selectedOption && question.selectedOption.correct);
+    }
+
+    incorrect(): void {
+        this.questions = this.allQuestions.filter(question=> question.selectedOption && !question.selectedOption.correct);
+    }
+
+    skipped(): void {
+        this.questions = this.allQuestions.filter(question=> !question.selectedOption);
     }
 
 }

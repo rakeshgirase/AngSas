@@ -6,6 +6,7 @@ import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { QuestionService } from "./exam/questions/question.service";
 import { SettingsService } from "./shared/settings.service";
+import { ConnectionService } from "./shared/connection.service";
 
 @NgModule({
     bootstrap: [
@@ -22,7 +23,8 @@ import { SettingsService } from "./shared/settings.service";
     providers: [
         { provide: NgModuleFactoryLoader, useClass: NSModuleFactoryLoader },
         QuestionService,
-        SettingsService
+        SettingsService,
+        ConnectionService
     ],
     schemas: [
         NO_ERRORS_SCHEMA
