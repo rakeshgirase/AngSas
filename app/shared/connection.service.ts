@@ -4,11 +4,10 @@ import * as connectivity from "tns-core-modules/connectivity";
 /**
  * Created by rakesh on 15-Nov-2017.
  */
-
 @Injectable()
 export class ConnectionService {
 
-    static connected: boolean;
+    static connected: boolean = true;
 
     constructor(){
         connectivity.startMonitoring(function onConnectionTypeChanged(newConnectionType: number) {
@@ -25,8 +24,6 @@ export class ConnectionService {
             }
         });
     }
-
-
 
     isConnected(): boolean {
         return ConnectionService.connected;

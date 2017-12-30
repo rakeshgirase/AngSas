@@ -22,6 +22,7 @@ export class DetailedResultComponent {
     private allQuestions: Array<IQuestionWrapper>;
     private questions: Array<IQuestionWrapper>;
     private mode: string;
+    private message: string;
 
     constructor(private route: ActivatedRoute, private router: RouterExtensions) {
         application.android.on(AndroidApplication.activityBackPressedEvent, (data: AndroidActivityBackPressedEventData) => {
@@ -61,19 +62,27 @@ export class DetailedResultComponent {
     }
 
     all(): void {
+        this.message = "";
         this.questions = this.allQuestions;
     }
 
     correct(): void {
+        this.message = "correct";
         this.questions = this.allQuestions.filter(question=> question.selectedOption && question.selectedOption.correct);
     }
 
     incorrect(): void {
+        this.message = "incorrect";
         this.questions = this.allQuestions.filter(question=> question.selectedOption && !question.selectedOption.correct);
     }
 
     skipped(): void {
+        this.message = "skipped";
         this.questions = this.allQuestions.filter(question=> !question.selectedOption);
+    }
+
+    hasZeroQuestions(): boolean{
+        return !this.questions || this.questions.length === 0;
     }
 
 }

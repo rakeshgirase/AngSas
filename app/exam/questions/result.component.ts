@@ -22,6 +22,7 @@ export class ResultComponent {
     private totalQuestions: number;
     private mode: string;
     private questions: Array<IQuestionWrapper>;
+    private percentage: number;
 
     constructor(private route: ActivatedRoute,private routerExtensions: RouterExtensions) {
         this.route.queryParams.subscribe((params) => {
@@ -40,6 +41,7 @@ export class ResultComponent {
                 this.wrong = this.wrong + 1;
             }
         }
+        this.percentage = this.right*100/this.questions.length;
     }
 
     showDetailedResult(): void {

@@ -8,6 +8,7 @@
     -->
     <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()"
                 ios.position="left">
+        <Label class="action-bar-title" text="Result" color="#ffffff"></Label>
     </ActionItem>
 </ActionBar>
 
@@ -38,6 +39,8 @@ it shouldn't have any other siblings other than the <ActionBar> component.
         <Label [text]="right" class="title"></Label>
         <Label text="Wrong" class="title"></Label>
         <Label [text]="wrong" class="title"></Label>
+        <Label text="Percentage" class="title"></Label>
+        <Label text="{{percentage}}%" class="title"></Label>
         <Button class="btn btn-primary btn-rounded-lg" text="Details" (tap)="showDetailedResult()"></Button>
     </StackLayout>
 </RadSideDrawer>

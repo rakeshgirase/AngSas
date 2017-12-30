@@ -1,6 +1,6 @@
 import {Injectable, OnInit} from "@angular/core";
 import * as appSettings from "application-settings";
-import {ISetting, State} from "../exam/questions/questions.model";
+import {IQuestion, ISetting, State} from "../exam/questions/questions.model";
 
 /**
  * Created by rakesh on 15-Nov-2017.
@@ -9,8 +9,11 @@ const SETTINGS = "SETTINGS";
 
 @Injectable()
 export class SettingsService {
+    static VERSION_NUMBER: number = 2;
+    static VERSION: string = "VERSION";
     static MAIN: string = "main";
     static SHORT: string = "short";
+    static QUESTIONS: string = "questions";
     DEFAULT_SETTING: ISetting = {totalQuestionsMain: 67, totalQuestionsShort: 15};
     private DEFAULT_STATE: State = {questions: [], questionNumber: 0, totalQuestions: 15};
     DEFAULT_MAIN_STATE: State = {
@@ -71,8 +74,12 @@ export class SettingsService {
     }
 
     clearAll(): void {
-        this.clearCache(SettingsService.MAIN);
-        this.clearCache(SettingsService.SHORT);
+        if(!appSettings.hasKey(SettingsService.VERSION) || appSettings.getNumber(SettingsService.VERSION) < SettingsService.VERSION_NUMBER){
+            this.clearCache(SettingsService.MAIN);
+            this.clearCache(SettingsService.SHORT);
+            this.clearCache(SettingsService.QUESTIONS);
+        }
+        appSettings.setNumber(SettingsService.VERSION, SettingsService.VERSION_NUMBER);
     }
 
     saveSetting(setting: ISetting) {
@@ -81,7 +88,7 @@ export class SettingsService {
         let state: State = this.readCache(SettingsService.MAIN);
         if (setting.totalQuestionsMain > state.totalQuestions) {
             state.totalQuestions = setting.totalQuestionsMain;
-            this.saveCache(SettingsService.MAIN, state)
+            this.saveCache(SettingsService.MAIN, state);
         }
         state = this.readCache(SettingsService.SHORT);
         if (setting.totalQuestionsMain > state.totalQuestions) {
@@ -90,4 +97,22 @@ export class SettingsService {
         }
     }
 
+    saveQuestions(questions: Array<IQuestion>): void {
+        const json: string = JSON.stringify(questions);
+        appSettings.setString(SettingsService.QUESTIONS, json);
+    }
+
+    readQuestions(): Array<IQuestion> {
+        let questions: Array<IQuestion>;
+        try {
+            questions = this.hasQuestions() ? JSON.parse(appSettings.getString(SettingsService.QUESTIONS)) : [];
+        } catch (error) {
+            questions = [];
+        }
+        return questions;
+    }
+
+    hasQuestions(): boolean {
+        return appSettings.hasKey(SettingsService.QUESTIONS);
+    }
 }

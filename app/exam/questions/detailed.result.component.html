@@ -9,6 +9,7 @@
     <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()"
                 ios.position="left">
     </ActionItem>
+    <Label class="action-bar-title" text="Details" color="#ffffff"></Label>
 </ActionBar>
 
 <!--
@@ -30,15 +31,19 @@ it shouldn't have any other siblings other than the <ActionBar> component.
     Use the tkMainContent directive to display the content of the page when you have an app drawer.
     -->
 
-    <StackLayout tkMainContent>
-        <StackLayout orientation="horizontal" marginTop="20px" marginBottom="20px">
-            <Button text="All" margin="10px" (tap)="all()"></Button>
-            <Button backgroundColor="#07C65A" text="Correct" margin="10px" (tap)="correct()"></Button>
-            <Button backgroundColor="#ed1b1f" text="Wrong" margin="10px" (tap)="incorrect()"></Button>
-            <Button backgroundColor="#4c8ec1" text="Skipped" margin="10px" (tap)="skipped()"></Button>
+    <DockLayout stretchLastChild="true" tkMainContent>
+        <StackLayout dock="bottom" orientation="horizontal" marginTop="20px">
+            <Button backgroundColor="#14418B" text="All" (tap)="all()" color="#ffffff"></Button>
+            <Button backgroundColor="#07C65A" text="Correct" color="#ffffff" (tap)="correct()"></Button>
+            <Button backgroundColor="#ed1b1f" text="Wrong" color="#ffffff" (tap)="incorrect()"></Button>
+            <Button backgroundColor="#4c8ec1" text="Skipped" color="#ffffff" (tap)="skipped()"></Button>
         </StackLayout>
         <ScrollView marginLeft="30px" marginRight="30px">
-            <StackLayout class="list-group-item">
+            <StackLayout *ngIf="hasZeroQuestions()">
+                <Label text="No questions were {{message}}">
+                </Label>
+            </StackLayout>
+            <StackLayout class="list-group-item" *ngIf="!hasZeroQuestions()">
                 <li *ngFor="let question of questions, let i = index">
                     <Label text="Question Number: {{i+1}} of {{questions.length}}" textWrap="true"
                            marginTop="50px"></Label>
@@ -53,5 +58,5 @@ it shouldn't have any other siblings other than the <ActionBar> component.
                 </li>
             </StackLayout>
         </ScrollView>
-    </StackLayout>
+    </DockLayout>
 </RadSideDrawer>
