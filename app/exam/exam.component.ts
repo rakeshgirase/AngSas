@@ -54,8 +54,8 @@ export class ExamComponent implements OnInit {
             .switchMap((activatedRoute) => activatedRoute.params)
             .forEach((params) => {
                 this.mode = params.mode;
-                this.settingsService.clearCache("practice");
                 this.settingsService.createSetting();
+                this.settingsService.clearAll();
                 this.state = this.settingsService.readCache(this.mode);
                 this.showFromState();
                 this.drawerComponent.sideDrawer.closeDrawer();
@@ -70,6 +70,14 @@ export class ExamComponent implements OnInit {
         this.showAnswerFlag = true;
     }
 
+    showFromState(): void {
+        if (this.state.questions.length > this.state.questionNumber || this.state.questionNumber === this.state.totalQuestions) {
+            this.questionWrapper = this.state.questions[this.state.questionNumber - 1];
+        } else {
+            this.next();
+        }
+    }
+
     previous(): void {
         this.showAnswerFlag = false;
         if (this.state.questionNumber > 1) {
@@ -79,32 +87,27 @@ export class ExamComponent implements OnInit {
         }
     }
 
-    showFromState(): void {
-        if (this.state.questions.length > this.state.questionNumber || this.state.questionNumber === this.state.totalQuestions) {
-            this.questionWrapper = this.state.questions[this.state.questionNumber - 1];
-        } else {
-            this.next();
-        }
-    }
-
     next(): void {
         if (this.isPracticeMode()) {
             this.showAnswerFlag = false;
-            this.questionService.getNextQuestion().subscribe((data: IQuestion) => {
-                this.state.questionNumber = this.state.questionNumber + 1;
-                let question:IQuestion = data;
-                this.questionWrapper = {question};
-                this.state.questions.push(this.questionWrapper);
-            });
-        } else if (this.state.questionNumber < this.state.totalQuestions) {
-            if (this.state.questions.length>0 && this.state.questions.length > this.state.questionNumber) {
+            if (this.state.questions.length > 0 && this.state.questions.length >= this.state.questionNumber) {
                 this.state.questionNumber = this.state.questionNumber + 1;
                 this.questionWrapper = this.state.questions[this.state.questionNumber - 1];
             } else {
                 this.questionService.getNextQuestion().subscribe((data: IQuestion) => {
                     this.state.questionNumber = this.state.questionNumber + 1;
-                    let question:IQuestion = data;
-                    this.questionWrapper = {question};
+                    this.questionWrapper = {question: data};
+                    this.state.questions.push(this.questionWrapper);
+                });
+            }
+        } else if (this.state.questionNumber < this.state.totalQuestions) {
+            if (this.state.questions.length > 0 && this.state.questions.length >= this.state.questionNumber) {
+                this.state.questionNumber = this.state.questionNumber + 1;
+                this.questionWrapper = this.state.questions[this.state.questionNumber - 1];
+            } else {
+                this.questionService.getNextQuestion().subscribe((data: IQuestion) => {
+                    this.state.questionNumber = this.state.questionNumber + 1;
+                    this.questionWrapper = {question: data};
                     this.state.questions.push(this.questionWrapper);
                 });
             }
@@ -173,7 +176,7 @@ export class ExamComponent implements OnInit {
     getColor(option: IOption): string {
         let color = "white";
         if (this.showAnswerFlag && this.isPracticeMode()) {
-            if(this.questionWrapper.selectedOption){
+            if (this.questionWrapper.selectedOption) {
                 if (option.correct) {
                     color = "#07C65A";
                 } else if (this.questionWrapper.selectedOption === option && !option.correct) {

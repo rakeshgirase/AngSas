@@ -9,18 +9,18 @@ const SETTINGS = "SETTINGS";
 
 @Injectable()
 export class SettingsService {
-    static VERSION_NUMBER: number = 2;
+    static VERSION_NUMBER: number = 3;
     static VERSION: string = "VERSION";
     static MAIN: string = "main";
     static SHORT: string = "short";
     static QUESTIONS: string = "questions";
     DEFAULT_SETTING: ISetting = {totalQuestionsMain: 67, totalQuestionsShort: 15};
-    private DEFAULT_STATE: State = {questions: [], questionNumber: 0, totalQuestions: 15};
     DEFAULT_MAIN_STATE: State = {
         questions: [],
         questionNumber: 0,
         totalQuestions: this.DEFAULT_SETTING.totalQuestionsMain
     };
+    private DEFAULT_STATE: State = {questions: [], questionNumber: 0, totalQuestions: 15};
 
     private DEFAULT_SHORT_STATE: State = {
         questions: [],
@@ -79,6 +79,7 @@ export class SettingsService {
             this.clearCache(SettingsService.SHORT);
             this.clearCache(SettingsService.QUESTIONS);
         }
+        this.clearCache("practice");
         appSettings.setNumber(SettingsService.VERSION, SettingsService.VERSION_NUMBER);
     }
 
